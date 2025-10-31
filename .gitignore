@@ -12,6 +12,7 @@ Recordings/
 # IDE generated files
 .vscode/
 .idea/
+.vs/
 *.csproj
 *.unityproj
 *.sln
