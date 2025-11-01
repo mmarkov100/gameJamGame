@@ -10,7 +10,7 @@ public class PlayerAttack : MonoBehaviour
     public float cooldown = 1f;          // кд между атаками
     public int damage = 25;              // урон за удар
     public float range = 1.6f;           // длина удара
-    public float radius = 0.5f;          // «толщина» удара
+    public float radius = 0.1f;          // «толщина» удара
     public float hitHeight = 0.8f;       // высота центра удара от пола
     public LayerMask hittableMask = ~0;  // можно ограничить слоем Enemy, иначе ~0
 
@@ -37,6 +37,10 @@ public class PlayerAttack : MonoBehaviour
         Vector3 a = origin;
         Vector3 b = origin + transform.forward * range;
 
+        // визуализация
+        Vector3 ringPos = transform.position + Vector3.up * 0.01f + transform.forward * (range * 0.7f);
+        HitFx.ShowRing(ringPos, radius * 1.2f, new Color(0.2f, 0.8f, 1f), 0.18f);
+
         // ищем все коллайдеры в капсуле
         Collider[] hits = Physics.OverlapCapsule(a, b, radius, hittableMask, QueryTriggerInteraction.Ignore);
 
@@ -46,6 +50,7 @@ public class PlayerAttack : MonoBehaviour
         foreach (var col in hits)
         {
             if (col == null) continue;
+
 
             var t = col.attachedRigidbody ? col.attachedRigidbody.transform : col.transform;
             if (seen.Contains(t)) continue;
@@ -57,6 +62,10 @@ public class PlayerAttack : MonoBehaviour
             if (col.TryGetComponent<EnemyHealth>(out var enemy))
             {
                 Vector3 hitPoint = col.ClosestPoint(origin + transform.forward * (range * 0.5f));
+
+                // визуализация 
+                HitFx.HitSpark(hitPoint, Color.yellow);
+                
                 enemy.TakeDamage(damage, hitPoint, -transform.forward);
             }
         }
