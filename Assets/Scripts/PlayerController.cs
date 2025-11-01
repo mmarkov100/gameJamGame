@@ -27,17 +27,12 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         // --- Ввод ---
-#if ENABLE_INPUT_SYSTEM
         var k = Keyboard.current;
         if (k != null)
         {
             hInput = (k.aKey.isPressed ? -1f : 0f) + (k.dKey.isPressed ? 1f : 0f);
             vInput = (k.sKey.isPressed ? -1f : 0f) + (k.wKey.isPressed ? 1f : 0f);
         }
-#else
-        hInput = Input.GetAxisRaw("Horizontal"); // A/D — поворот
-        vInput = Input.GetAxisRaw("Vertical");   // W/S — вперёд/назад
-#endif
     }
 
     void FixedUpdate()
