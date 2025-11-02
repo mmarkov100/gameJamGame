@@ -40,20 +40,11 @@ public class PlayerAttack : MonoBehaviour
         if (Time.time < nextAttackTime) return;
         nextAttackTime = Time.time + cooldown;
 
-        // Триггерим АНИМАЦИЮ только при нажатии
         if (parry != null && parry.InRiposteWindow)
             anim.SetTrigger("Riposte");
         else
             anim.SetTrigger("Attack");
-
-        // Наноcим урон из события анимации (см. метод MeleeHit)
-        // Если не используешь событие — можешь раскомментить следующую строку,
-        // но тогда удар будет в момент нажатия, а не в контакт клипа:
-        // DoMeleeHit();
     }
-
-    // В клипе Attack (и Riposte, если есть отдельный клип)
-    // поставь Animation Event "MeleeHit" на кадр контакта.
     public void MeleeHit() => DoMeleeHit();
 
     void DoMeleeHit()
