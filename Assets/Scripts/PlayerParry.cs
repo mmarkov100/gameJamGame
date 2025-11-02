@@ -14,9 +14,16 @@ public class PlayerParry : MonoBehaviour
     [Header("Кулдаун")]
     public float parryCooldown = 2f;     // КД отражения в секундах
 
+    [Header("Riposte")]
+    public float riposteWindow = 0.7f; // время на контратаку после успешного парри
+    float riposteUntil;
+    public bool InRiposteWindow => Time.time < riposteUntil;
+    public Animator anim;
+
     float parryActiveUntil = -1f;
     float parryReadyTime = 0f;           // когда способность снова доступна
 
+    void Awake() { if (!anim) anim = GetComponent<Animator>(); }
     void Update()
     {
         bool parryPressed =
@@ -30,6 +37,7 @@ public class PlayerParry : MonoBehaviour
 
             // FX окно парирования
             HitFx.ShowRing(transform.position, parryRadius, new Color(0.2f, 1f, 1f), parryWindow);
+            anim.SetTrigger("Deflect"); // телеграф анимации щита/стойки
         }
     }
 
@@ -60,6 +68,8 @@ public class PlayerParry : MonoBehaviour
 
         stun = stunDuration;
         parryActiveUntil = -1f; // закрываем окно
+
+        riposteUntil = Time.time + riposteWindow;
 
         return true;
     }

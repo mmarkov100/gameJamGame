@@ -11,6 +11,9 @@ public class PlayerController : MonoBehaviour
     public float turnSpeed = 180f;   // °/с поворот влево/вправо
     public float acceleration = 30f; // разгон/торможение по продольной оси
 
+    [Header("Анимация")]
+    public Animator anim;                 // ← добавили
+
     Rigidbody rb;
 
     // буфер ввода, читаем в Update, применяем в FixedUpdate
@@ -22,6 +25,10 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         rb.interpolation = RigidbodyInterpolation.Interpolate;
         // В инспекторе также заморозьте вращение по X и Z, чтобы не заваливался.
+
+        // Animator
+        if (!anim) anim = GetComponent<Animator>();      // можно назначить в инспекторе
+        if (anim) anim.applyRootMotion = false;          // движение делаем физикой
     }
 
     void Update()
@@ -32,6 +39,13 @@ public class PlayerController : MonoBehaviour
         {
             hInput = (k.aKey.isPressed ? -1f : 0f) + (k.dKey.isPressed ? 1f : 0f);
             vInput = (k.sKey.isPressed ? -1f : 0f) + (k.wKey.isPressed ? 1f : 0f);
+        }
+
+        // ← прокидываем в Animator параметр Move (-1…+1)
+        if (anim)
+        {
+            // можно плавно: SetFloat(name, value, dampTime, deltaTime)
+            anim.SetFloat("Move", vInput, 0.1f, Time.deltaTime);
         }
     }
 
