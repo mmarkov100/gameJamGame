@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 06e99cf773032064a9bc0ca1f3108252
+timeCreated: 1484992207
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 102734
+  packageName: Simple Sonar Shader
+  packageVersion: 1.0
+  assetPath: Assets/MadeByProfessorOakie/SimpleSonarShader/Example/SimpleSonarShader_ExampleMaterial.mat
+  uploadId: 364224

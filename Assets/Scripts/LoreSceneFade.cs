@@ -9,77 +9,58 @@ using UnityEngine.InputSystem.Controls;
 
 public class LoreSceneFade : MonoBehaviour
 {
-    public float fadeDuration = 0.8f;
-    private CanvasGroup cg;
-    private bool isTransition;
+    [Header("Timings")]
+    public float fadeDuration = 0.8f;   // длительность FadeIn/FadeOut
+    public float beforeFadeOutDelay = 1f; // задержка перед FadeOut после нажатия
+
+    CanvasGroup cg;
+    bool isTransition;
 
     void Awake()
     {
         cg = GetComponent<CanvasGroup>();
-        cg.alpha = 1f;
-        cg.blocksRaycasts = true;
+        cg.alpha = 1f;                 // начинаем с чёрного
+        cg.blocksRaycasts = true;      // блокируем клики на старте
     }
 
     void Start()
     {
-        StartCoroutine(Fade(1f, 0f, fadeDuration, () => cg.blocksRaycasts = false));
+        // Fade In
+        StartCoroutine(Fade(1f, 0f, fadeDuration, () =>
+        {
+            cg.blocksRaycasts = false; // разблокируем UI после появления
+        }));
     }
 
     void Update()
     {
         if (isTransition) return;
-
-        bool pressed = false;
-
-#if ENABLE_INPUT_SYSTEM
-        // --- New Input System ---
-        // Клавиатура
-        if (!pressed && Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame) pressed = true;
-
-        // Мышь
-        if (!pressed && Mouse.current != null &&
-            (Mouse.current.leftButton.wasPressedThisFrame ||
-             Mouse.current.rightButton.wasPressedThisFrame ||
-             Mouse.current.middleButton.wasPressedThisFrame)) pressed = true;
-
-        // Геймпад (перебор всех ButtonControl)
-        if (!pressed && Gamepad.current != null)
-        {
-            var gp = Gamepad.current;
-            foreach (var c in gp.allControls)
-            {
-                if (c is ButtonControl b && b.wasPressedThisFrame) { pressed = true; break; }
-            }
-        }
-
-        // Тач
-        if (!pressed && Touchscreen.current != null &&
-            Touchscreen.current.primaryTouch.press.wasPressedThisFrame) pressed = true;
-#else
-        // --- Старый Input ---
-        if (Input.anyKeyDown || Input.GetMouseButtonDown(0) || Input.touchCount > 0) pressed = true;
-#endif
-
-        if (pressed) NextScene();
+        if (AnyPressThisFrame()) NextScene(); // реакция на любую кнопку/клик/тач/геймпад
     }
 
     public void NextScene()
     {
         if (isTransition) return;
         isTransition = true;
-        cg.blocksRaycasts = true;
-        StartCoroutine(FadeOutAndLoad());
+        StartCoroutine(GoNextRoutine());
     }
 
-    IEnumerator FadeOutAndLoad()
+    IEnumerator GoNextRoutine()
     {
+        // 1) подождать секунду (настраивается через beforeFadeOutDelay)
+        if (beforeFadeOutDelay > 0f)
+            yield return new WaitForSeconds(beforeFadeOutDelay);
+
+        // 2) FadeOut: 0 -> 1
+        cg.blocksRaycasts = true; // блокируем ввод на время затемнения
         yield return Fade(0f, 1f, fadeDuration);
 
+        // 3) загрузка следующей сцены по индексу
         int next = SceneManager.GetActiveScene().buildIndex + 1;
         if (next < SceneManager.sceneCountInBuildSettings)
             SceneManager.LoadScene(next);
         else
-            Debug.Log("Последняя сцена — переход невозможен.");
+            Debug.Log("Последняя сцена — нет следующей.");
     }
 
     IEnumerator Fade(float from, float to, float duration, System.Action onDone = null)
@@ -94,5 +75,29 @@ public class LoreSceneFade : MonoBehaviour
         }
         cg.alpha = to;
         onDone?.Invoke();
+    }
+
+    bool AnyPressThisFrame()
+    {
+#if ENABLE_INPUT_SYSTEM
+        if (Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame) return true;
+
+        if (Mouse.current != null &&
+           (Mouse.current.leftButton.wasPressedThisFrame ||
+            Mouse.current.rightButton.wasPressedThisFrame ||
+            Mouse.current.middleButton.wasPressedThisFrame)) return true;
+
+        if (Touchscreen.current != null &&
+            Touchscreen.current.primaryTouch.press.wasPressedThisFrame) return true;
+
+        if (Gamepad.current != null)
+        {
+            foreach (var c in Gamepad.current.allControls)
+                if (c is ButtonControl b && b.wasPressedThisFrame) return true;
+        }
+        return false;
+#else
+        return Input.anyKeyDown || Input.GetMouseButtonDown(0) || Input.touchCount > 0;
+#endif
     }
 }
