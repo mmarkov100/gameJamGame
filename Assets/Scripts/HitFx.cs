@@ -7,7 +7,7 @@ public class HitFx : MonoBehaviour
     {
         var m = new Material(Shader.Find("Universal Render Pipeline/Lit"));
         m.SetColor("_BaseColor", c);
-        m.SetFloat("_Surface", 1);   // transparent
+        m.SetFloat("_Surface", 1);
         m.SetFloat("_ZWrite", 0);
         m.EnableKeyword("_ALPHAPREMULTIPLY_ON");
         m.renderQueue = 3000;

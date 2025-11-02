@@ -51,7 +51,11 @@ public class EnemyHealth : MonoBehaviour
 
     void Die()
     {
-        // простая «смерть»
+        // уведомляем AI
+        if (TryGetComponent<EnemyAI>(out var ai))
+            ai.OnDeath();
+
+        // удаляем объект или выключаем
         if (destroyOnDeath) Destroy(gameObject);
         else gameObject.SetActive(false);
     }
