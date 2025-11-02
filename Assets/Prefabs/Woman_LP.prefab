@@ -141,7 +141,7 @@ PrefabInstance:
     - target: {fileID: -5829051595182569337, guid: 13c8db77627b87846aa5798e6cee1598, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: b2a3219509ef34a42b88c89672e87b21, type: 2}
+      objectReference: {fileID: 2100000, guid: c18fd94ba81974c4ba5d827725e41808, type: 2}
     - target: {fileID: 919132149155446097, guid: 13c8db77627b87846aa5798e6cee1598, type: 3}
       propertyPath: m_Name
       value: Woman_LP
@@ -187,6 +187,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 13c8db77627b87846aa5798e6cee1598, type: 3}
       insertIndex: -1
       addedObject: {fileID: -9098826624919656354}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 13c8db77627b87846aa5798e6cee1598, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3704781396273124006}
   m_SourcePrefab: {fileID: 100100000, guid: 13c8db77627b87846aa5798e6cee1598, type: 3}
 --- !u!4 &5000417187138747067 stripped
 Transform:
@@ -318,3 +321,21 @@ MonoBehaviour:
   parryCooldown: 2
   riposteWindow: 0.7
   anim: {fileID: 0}
+--- !u!114 &3704781396273124006
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8513560319910256682}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e3466b29e512da48ab898668ef0288e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SonarController
+  waveSpeed: 12
+  waveWidth: 1.2
+  pingInterval: 1
+  maxDistance: 40
+  maxWaves: 8
+  drawDebugRings: 0
