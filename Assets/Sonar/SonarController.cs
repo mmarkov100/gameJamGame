@@ -14,7 +14,7 @@ public class SonarController : MonoBehaviour
     [Min(0.01f)] public float waveWidth = 1.2f;       // «толщина» кольца (м)
     [Min(0.2f)] public float pingInterval = 1.5f;     // частота запуска новых волн (сек)
     [Min(5f)] public float maxDistance = 40f;       // максимум радиуса (м)
-    [Range(1, 8)] public int maxWaves = 4;            // одновременно активных волн
+    [Range(1, 100000)] public int maxWaves = 4;            // одновременно активных волн
 
     [Header("Визуальная отладка")]
     public bool drawDebugRings = false;

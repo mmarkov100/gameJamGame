@@ -133,7 +133,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.37
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -172,20 +172,32 @@ PrefabInstance:
       value: Enemy (1)
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadius
-      value: 10
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackRange
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: sightRadius
-      value: 200
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackCastTime
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadiusJitter
-      value: 10
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: idleShuffleRadius
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -206,7 +218,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.37
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -245,16 +257,28 @@ PrefabInstance:
       value: Enemy (2)
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadius
-      value: 10
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackRange
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: sightRadius
-      value: 200
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackCastTime
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadiusJitter
-      value: 10
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -275,7 +299,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.37
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -314,16 +338,28 @@ PrefabInstance:
       value: Enemy (10)
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadius
-      value: 10
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackRange
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: sightRadius
-      value: 200
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackCastTime
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadiusJitter
-      value: 10
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -455,7 +491,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.3
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -494,16 +530,28 @@ PrefabInstance:
       value: Enemy (8)
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadius
-      value: 10
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackRange
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: sightRadius
-      value: 200
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackCastTime
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadiusJitter
-      value: 10
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -524,7 +572,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.37
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -563,16 +611,28 @@ PrefabInstance:
       value: Enemy (3)
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadius
-      value: 10
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackRange
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: sightRadius
-      value: 200
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackCastTime
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadiusJitter
-      value: 10
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -704,7 +764,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.37
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -743,16 +803,28 @@ PrefabInstance:
       value: Enemy (4)
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadius
-      value: 10
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackRange
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: sightRadius
-      value: 200
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackCastTime
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadiusJitter
-      value: 10
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -884,7 +956,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.37
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -923,16 +995,28 @@ PrefabInstance:
       value: Enemy (7)
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadius
-      value: 10
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackRange
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: sightRadius
-      value: 200
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackCastTime
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadiusJitter
-      value: 10
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1025,13 +1109,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 776293482}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.08715578, y: 0, z: 0, w: 0.9961947}
-  m_LocalPosition: {x: 0, y: 6.49, z: -16.85}
+  m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
+  m_LocalPosition: {x: 0, y: 12, z: -16.85}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 10, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
 --- !u!114 &776293486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1084,9 +1168,45 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: -9098826624919656354, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
+      propertyPath: parryWindow
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -9098826624919656354, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
+      propertyPath: stunDuration
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -9098826624919656354, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
+      propertyPath: m_EditorClassIdentifier
+      value: Assembly-CSharp::PlayerParry
+      objectReference: {fileID: 0}
     - target: {fileID: 1304132840352565329, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
       propertyPath: maxHP
-      value: 1000000000
+      value: 99999
+      objectReference: {fileID: 0}
+    - target: {fileID: 3704781396273124006, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
+      propertyPath: maxWaves
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3704781396273124006, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
+      propertyPath: waveSpeed
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 3704781396273124006, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
+      propertyPath: waveWidth
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3704781396273124006, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
+      propertyPath: maxDistance
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 3704781396273124006, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
+      propertyPath: pingInterval
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3704781396273124006, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
+      propertyPath: drawDebugRings
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7406142117972408599, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
       propertyPath: anim
@@ -1094,7 +1214,7 @@ PrefabInstance:
       objectReference: {fileID: 1068500381}
     - target: {fileID: 8513560319910256682, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
       propertyPath: m_Name
-      value: Woman_LP
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 9038142456292244112, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1102,7 +1222,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9038142456292244112, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.05000019
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 9038142456292244112, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1155,7 +1275,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.11
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1194,16 +1314,28 @@ PrefabInstance:
       value: Enemy (6)
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadius
-      value: 10
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackRange
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: sightRadius
-      value: 200
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackCastTime
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadiusJitter
-      value: 10
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1224,7 +1356,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.37
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1263,16 +1395,28 @@ PrefabInstance:
       value: Enemy (5)
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadius
-      value: 10
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackRange
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: sightRadius
-      value: 200
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackCastTime
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadiusJitter
-      value: 10
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1409,7 +1553,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.37
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1448,16 +1592,28 @@ PrefabInstance:
       value: Enemy (9)
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadius
-      value: 10
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackRange
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: sightRadius
-      value: 200
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackCastTime
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadiusJitter
-      value: 10
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1541,7 +1697,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1656574754
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1930,110 +2086,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &2074075900 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e40e9b0484685e84c9b31b2833f0b8b9, type: 3}
-  m_PrefabInstance: {fileID: 1354727658}
-  m_PrefabAsset: {fileID: 0}
---- !u!1001 &4447418786287653393
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 1304132840352565329, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
-      propertyPath: maxHP
-      value: 1000000
-      objectReference: {fileID: 0}
-    - target: {fileID: 3704781396273124006, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
-      propertyPath: waveSpeed
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 3704781396273124006, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
-      propertyPath: waveWidth
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3704781396273124006, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
-      propertyPath: maxDistance
-      value: 25
-      objectReference: {fileID: 0}
-    - target: {fileID: 3704781396273124006, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
-      propertyPath: pingInterval
-      value: 1.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 8513560319910256682, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
-      propertyPath: m_Name
-      value: Woman_LP
-      objectReference: {fileID: 0}
-    - target: {fileID: 9038142456292244112, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.63
-      objectReference: {fileID: 0}
-    - target: {fileID: 9038142456292244112, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.63
-      objectReference: {fileID: 0}
-    - target: {fileID: 9038142456292244112, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.63
-      objectReference: {fileID: 0}
-    - target: {fileID: 9038142456292244112, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.08186455
-      objectReference: {fileID: 0}
-    - target: {fileID: 9038142456292244112, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.05000019
-      objectReference: {fileID: 0}
-    - target: {fileID: 9038142456292244112, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.07709026
-      objectReference: {fileID: 0}
-    - target: {fileID: 9038142456292244112, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9038142456292244112, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9038142456292244112, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9038142456292244112, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9038142456292244112, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9038142456292244112, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9038142456292244112, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9038142456292244112, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 8039699571077860269, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2074075900}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8513560319910256682, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1242837959}
-  m_SourcePrefab: {fileID: 100100000, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
