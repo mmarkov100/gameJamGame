@@ -133,7 +133,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.37
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -176,20 +176,32 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadius
-      value: 10
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackRange
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: sightRadius
-      value: 200
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackCastTime
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadiusJitter
-      value: 10
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: idleShuffleRadius
-      value: 0
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8289082979820233106, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -214,7 +226,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.37
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -253,16 +265,28 @@ PrefabInstance:
       value: Enemy (2)
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadius
-      value: 10
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackRange
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: sightRadius
-      value: 200
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackCastTime
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadiusJitter
-      value: 10
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -283,7 +307,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.37
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -322,16 +346,28 @@ PrefabInstance:
       value: Enemy (10)
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadius
-      value: 10
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackRange
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: sightRadius
-      value: 200
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackCastTime
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadiusJitter
-      value: 10
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -463,7 +499,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.3
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -502,16 +538,28 @@ PrefabInstance:
       value: Enemy (8)
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadius
-      value: 10
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackRange
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: sightRadius
-      value: 200
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackCastTime
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadiusJitter
-      value: 10
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -532,7 +580,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.37
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -571,16 +619,28 @@ PrefabInstance:
       value: Enemy (3)
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadius
-      value: 10
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackRange
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: sightRadius
-      value: 200
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackCastTime
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadiusJitter
-      value: 10
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -712,7 +772,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.37
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -751,16 +811,28 @@ PrefabInstance:
       value: Enemy (4)
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadius
-      value: 10
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackRange
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: sightRadius
-      value: 200
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackCastTime
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadiusJitter
-      value: 10
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -892,7 +964,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.37
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -931,16 +1003,28 @@ PrefabInstance:
       value: Enemy (7)
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadius
-      value: 10
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackRange
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: sightRadius
-      value: 200
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackCastTime
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadiusJitter
-      value: 10
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1087,13 +1171,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 776293482}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.08715578, y: 0, z: 0, w: 0.9961947}
-  m_LocalPosition: {x: 0, y: 6.49, z: -16.85}
+  m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
+  m_LocalPosition: {x: 0, y: 12, z: -16.85}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 10, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
 --- !u!114 &776293486
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1176,7 +1260,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1304132840352565329, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
       propertyPath: maxHP
-      value: 1000000000
+      value: 99999
+      objectReference: {fileID: 0}
+    - target: {fileID: 3704781396273124006, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
+      propertyPath: maxWaves
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3704781396273124006, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
+      propertyPath: waveSpeed
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 3704781396273124006, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
+      propertyPath: waveWidth
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3704781396273124006, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
+      propertyPath: maxDistance
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 3704781396273124006, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
+      propertyPath: pingInterval
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 3704781396273124006, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
+      propertyPath: drawDebugRings
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3704781396273124006, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
       propertyPath: waveWidth
@@ -1216,7 +1324,7 @@ PrefabInstance:
       objectReference: {fileID: 1490623367}
     - target: {fileID: 8513560319910256682, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
       propertyPath: m_Name
-      value: Woman_LP
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 9038142456292244112, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1224,7 +1332,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9038142456292244112, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.05000019
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 9038142456292244112, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1288,7 +1396,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.11
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1327,16 +1435,28 @@ PrefabInstance:
       value: Enemy (6)
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadius
-      value: 10
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackRange
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: sightRadius
-      value: 200
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackCastTime
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadiusJitter
-      value: 10
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1357,7 +1477,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.37
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1396,16 +1516,28 @@ PrefabInstance:
       value: Enemy (5)
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadius
-      value: 10
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackRange
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: sightRadius
-      value: 200
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackCastTime
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadiusJitter
-      value: 10
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1547,7 +1679,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.37
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 1138849942233917393, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1586,16 +1718,28 @@ PrefabInstance:
       value: Enemy (9)
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: anim
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadius
-      value: 10
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackRange
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: sightRadius
-      value: 200
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: attackCastTime
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: ringRadiusJitter
-      value: 10
+      value: 0.6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -144,7 +144,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: 1d2d431cc024ed04dbfc9943bcb0ada8, type: 2}
     - target: {fileID: 919132149155446097, guid: 13c8db77627b87846aa5798e6cee1598, type: 3}
       propertyPath: m_Name
-      value: Woman_LP
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 13c8db77627b87846aa5798e6cee1598, type: 3}
       propertyPath: m_TagString
@@ -191,6 +191,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 7544897107852993511}
   m_SourcePrefab: {fileID: 100100000, guid: 13c8db77627b87846aa5798e6cee1598, type: 3}
+--- !u!95 &3138378340525744362 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 13c8db77627b87846aa5798e6cee1598, type: 3}
+  m_PrefabInstance: {fileID: 8856143747240533371}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5000417187138747067 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4576320367818713024, guid: 13c8db77627b87846aa5798e6cee1598, type: 3}
@@ -220,8 +225,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 1, y: 4.864133, z: 0.92554003}
+  m_Center: {x: 0, y: 1.9320662, z: 0.037230004}
 --- !u!54 &5277038001202774567
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -264,7 +269,7 @@ MonoBehaviour:
   moveSpeed: 5
   turnSpeed: 180
   acceleration: 20
-  anim: {fileID: 0}
+  anim: {fileID: 3138378340525744362}
 --- !u!114 &8030081516313316202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -300,7 +305,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e97c3de00505142429531c0c32bee2cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealth
-  maxHP: 3
+  maxHP: 999999
   invulDuration: 0.5
 --- !u!114 &-9098826624919656354
 MonoBehaviour:
@@ -352,3 +357,10 @@ MonoBehaviour:
   roomLight: {fileID: 0}
   lightIntensity: 2.5
   parryLightTime: 2
+  m_EditorClassIdentifier: Assembly-CSharp::SonarController
+  waveSpeed: 12
+  waveWidth: 1.2
+  pingInterval: 1.5
+  maxDistance: 40
+  maxWaves: 4
+  drawDebugRings: 0
