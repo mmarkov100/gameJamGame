@@ -18,6 +18,18 @@ EditorBuildSettings:
     path: Assets/Scenes/PlayerScene.unity
     guid: 86ea4e527f4736947b61d9bbca008a95
   - enabled: 1
+    path: Assets/Scenes/lore_2.unity
+    guid: a6f291b171501814394922757f8fc12b
+  - enabled: 1
+    path: Assets/Scenes/lore_3.unity
+    guid: 570d5b9c71723f64baab0679d760df0a
+  - enabled: 1
+    path: Assets/Scenes/lore_4.unity
+    guid: 9d92c3185604fe74db97fec9a208ea7c
+  - enabled: 1
+    path: Assets/Scenes/lore_5.unity
+    guid: 5e5c22b9d6d543948bca4940b76f9845
+  - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   m_configObjects:
