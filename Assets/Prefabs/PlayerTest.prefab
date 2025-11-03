@@ -158,6 +158,7 @@ MonoBehaviour:
   moveSpeed: 5
   turnSpeed: 180
   acceleration: 20
+  anim: {fileID: 0}
 --- !u!114 &6107811081177518420
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -170,6 +171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27e239ff2749be34a8e42842b27d6fc2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  anim: {fileID: 0}
   cooldown: 0.7
   damage: 1
   range: 1.6
@@ -211,3 +213,5 @@ MonoBehaviour:
   stunDuration: 5
   autoFaceTurnSpeed: 9999
   parryCooldown: 2
+  riposteWindow: 0.7
+  anim: {fileID: 0}
