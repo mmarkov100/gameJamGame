@@ -141,7 +141,7 @@ PrefabInstance:
     - target: {fileID: -5829051595182569337, guid: 13c8db77627b87846aa5798e6cee1598, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: c18fd94ba81974c4ba5d827725e41808, type: 2}
+      objectReference: {fileID: 2100000, guid: 1d2d431cc024ed04dbfc9943bcb0ada8, type: 2}
     - target: {fileID: 919132149155446097, guid: 13c8db77627b87846aa5798e6cee1598, type: 3}
       propertyPath: m_Name
       value: Woman_LP
@@ -189,7 +189,7 @@ PrefabInstance:
       addedObject: {fileID: -9098826624919656354}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 13c8db77627b87846aa5798e6cee1598, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3704781396273124006}
+      addedObject: {fileID: 7544897107852993511}
   m_SourcePrefab: {fileID: 100100000, guid: 13c8db77627b87846aa5798e6cee1598, type: 3}
 --- !u!4 &5000417187138747067 stripped
 Transform:
@@ -313,15 +313,30 @@ MonoBehaviour:
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c6e48212737e0fc4f91928bf25c8acda, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: '::'
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerParry
   parryWindow: 0.5
   parryRadius: 1.3
-  stunDuration: 5
+  stunDuration: 3
   autoFaceTurnSpeed: 9999
   parryCooldown: 2
   riposteWindow: 0.7
   anim: {fileID: 0}
---- !u!114 &3704781396273124006
+  OnParrySuccess:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 11500000, guid: 455662de7db520741a7222c001db95fa, type: 3}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &7544897107852993511
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -330,12 +345,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 8513560319910256682}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2e3466b29e512da48ab898668ef0288e, type: 3}
+  m_Script: {fileID: 11500000, guid: 455662de7db520741a7222c001db95fa, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SonarController
-  waveSpeed: 12
-  waveWidth: 1.2
-  pingInterval: 1
-  maxDistance: 40
-  maxWaves: 8
-  drawDebugRings: 0
+  m_EditorClassIdentifier: Assembly-CSharp::ParrySonarSwitcher
+  parry: {fileID: -9098826624919656354}
+  roomLight: {fileID: 0}
+  lightIntensity: 2.5
+  parryLightTime: 2

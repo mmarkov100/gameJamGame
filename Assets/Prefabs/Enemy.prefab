@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 4936260489950038582}
   - component: {fileID: 4868808938866470452}
   - component: {fileID: 6251774817717813424}
-  - component: {fileID: 5548934542560501750}
+  - component: {fileID: 3462903630557514244}
   m_Layer: 3
   m_Name: Enemy
   m_TagString: Enemy
@@ -72,7 +72,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e6b05dc91ebea314b8609c9d4cecb5aa, type: 2}
+  - {fileID: -876546973899608171, guid: bcfcfca2e739042e2ab845c3727b47de, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -208,7 +208,7 @@ MonoBehaviour:
   reengageDelay: 1.2
   autoRequestEngage: 1
   requestEngageEvery: {x: 1, y: 2}
---- !u!114 &5548934542560501750
+--- !u!114 &3462903630557514244
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -223,4 +223,5 @@ MonoBehaviour:
   glowColor: {r: 0.4, g: 0.8, b: 1, a: 1}
   glowIntensity: 1.4
   glowDuration: 1
-  shaderName: Custom/SonarUnlit
+  triggerTolerance: 1
+  includeChildren: 1

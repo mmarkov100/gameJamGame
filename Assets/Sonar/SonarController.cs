@@ -1,130 +1,106 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Рассылает глобальные параметры волн в шейдер и (опционально) рисует кольца для отладки.
-/// В любой момент может существовать несколько активных волн (до maxWaves).
-/// </summary>
+[DefaultExecutionOrder(-300)]
 public class SonarController : MonoBehaviour
 {
     public static SonarController Instance { get; private set; }
 
-    [Header("Волны")]
-    [Min(0.1f)] public float waveSpeed = 12f;         // скорость волны (м/с)
-    [Min(0.01f)] public float waveWidth = 1.2f;       // «толщина» кольца (м)
-    [Min(0.2f)] public float pingInterval = 1.5f;     // частота запуска новых волн (сек)
-    [Min(5f)] public float maxDistance = 40f;       // максимум радиуса (м)
-    [Range(1, 8)] public int maxWaves = 4;            // одновременно активных волн
+    [Header("Ссылки")]
+    public Transform player;             // центр пинга (обычно ГГ)
 
-    [Header("Визуальная отладка")]
-    public bool drawDebugRings = false;
+    [Header("Параметры волн")]
+    public float waveSpeed = 8f;         // м/с — как быстро растёт радиус
+    public float waveWidth = 1.8f;       // толщина «кольца» (м)
+    public float waveInterval = 1.2f;    // период запуска волн (с)
+    public float tailFade = 0.0f;        // «послесвечение» позади фронта (0 = нет)
 
-    readonly List<Vector3> origins = new();
-    readonly List<float> startTimes = new();
+    [Header("Визуал кольца")]
+    public Color sonarColor = new Color(1, 1, 1, 1);
+    [Range(0f, 4f)] public float sonarIntensity = 1.2f;
+    public float worldDarkness = 0.0f;   // базовая видимость сцены в полной темноте (0-1)
 
-    float nextPingTime;
+    [Header("Управление")]
+    public bool autoStart = true;
+    public bool paused = false;
+
+    // текущее состояние волны
+    public float CurrentRadius { get; private set; }
+    public int WaveIndex { get; private set; }
+
+    float nextWaveTime;
+    Vector4 colorPacked;
 
     void Awake()
     {
+        if (Instance && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
+        colorPacked = new Vector4(sonarColor.r, sonarColor.g, sonarColor.b, sonarColor.a);
     }
 
     void OnEnable()
     {
-        // Сразу запускаем первую волну
-        EmitWave();
+        if (autoStart) nextWaveTime = Time.time + 0.2f;
+        PushGlobals(initial: true);
     }
 
     void Update()
     {
-        // Периодически создаём новую волну из текущей позиции игрока
-        if (Time.time >= nextPingTime)
-            EmitWave();
+        if (!player) return;
 
-        // Удаляем отыгравшие волны
-        CullWaves();
+        // Запуск новой волны по интервалу
+        if (!paused && Time.time >= nextWaveTime)
+        {
+            WaveIndex++;
+            CurrentRadius = 0f;
+            nextWaveTime = Time.time + waveInterval;
+        }
 
-        // Прокидываем глобали в шейдер
-        PushShaderGlobals();
+        // Обновляем радиус
+        if (!paused)
+            CurrentRadius += waveSpeed * Time.deltaTime;
 
-        // Враги могут читать активные волны (для «подсветки на 1 сек»)
-        // Ничего делать тут не нужно — они сами прочтут Instance из EnemySonarResponder.
+        // Прокидываем параметры в шейдеры (глобально)
+        PushGlobals();
     }
 
-    void EmitWave()
+    void PushGlobals(bool initial = false)
     {
-        nextPingTime = Time.time + pingInterval;
+        Vector3 p = player ? player.position : Vector3.zero;
 
-        origins.Add(transform.position);
-        startTimes.Add(Time.time);
-
-        // ограничиваем количество
-        while (origins.Count > maxWaves)
-        {
-            origins.RemoveAt(0);
-            startTimes.RemoveAt(0);
-        }
+        Shader.SetGlobalVector("_SonarOrigin", new Vector4(p.x, p.y, p.z, 0));
+        Shader.SetGlobalFloat("_SonarRadius", CurrentRadius);
+        Shader.SetGlobalFloat("_SonarWidth", Mathf.Max(0.01f, waveWidth));
+        Shader.SetGlobalFloat("_SonarTail", Mathf.Max(0f, tailFade));
+        Shader.SetGlobalVector("_SonarColor", colorPacked);
+        Shader.SetGlobalFloat("_SonarIntensity", sonarIntensity);
+        Shader.SetGlobalFloat("_WorldDarkness", Mathf.Clamp01(worldDarkness));
+        Shader.SetGlobalFloat("_SonarPaused", paused ? 1f : 0f);
+        Shader.SetGlobalInt("_SonarWaveIndex", WaveIndex);
     }
 
-    void CullWaves()
+    // ——— API для других компонентов ———
+
+    public bool IsFrontNearHorizontal(Vector3 worldPos, float toleranceMeters)
     {
-        for (int i = origins.Count - 1; i >= 0; i--)
-        {
-            float age = Time.time - startTimes[i];
-            float radius = waveSpeed * age;
-            if (radius > maxDistance + waveWidth * 1.1f)
-            {
-                origins.RemoveAt(i);
-                startTimes.RemoveAt(i);
-            }
-        }
+        Vector2 a = new Vector2(worldPos.x, worldPos.z);
+        Vector2 b = player ? new Vector2(player.position.x, player.position.z) : Vector2.zero;
+        float dist = Vector2.Distance(a, b);
+        return Mathf.Abs(dist - CurrentRadius) <= toleranceMeters;
     }
 
-    void PushShaderGlobals()
+    public void PauseForSeconds(float seconds)
     {
-        int count = Mathf.Min(origins.Count, 8); // шейдер поддерживает до 8
-        Vector4[] pos = new Vector4[8];
-        float[] ts = new float[8];
-
-        for (int i = 0; i < count; i++)
-        {
-            pos[i] = new Vector4(origins[i].x, origins[i].y, origins[i].z, 0f);
-            ts[i] = startTimes[i];
-        }
-
-        Shader.SetGlobalInt("_SonarWaveCount", count);
-        Shader.SetGlobalVectorArray("_SonarOrigins", pos);
-        Shader.SetGlobalFloatArray("_SonarStartTimes", ts);
-        Shader.SetGlobalFloat("_SonarSpeed", waveSpeed);
-        Shader.SetGlobalFloat("_SonarBandWidth", waveWidth);
-        Shader.SetGlobalFloat("_SonarMaxDistance", maxDistance);
-        Shader.SetGlobalFloat("_TimeNow", Time.time);
-
-        if (drawDebugRings)
-        {
-            for (int i = 0; i < count; i++)
-            {
-                float r = (Time.time - startTimes[i]) * waveSpeed;
-                DebugDrawRing(origins[i], r, Color.cyan);
-            }
-        }
+        if (!gameObject.activeInHierarchy) return;
+        StopAllCoroutines();
+        StartCoroutine(PauseCo(seconds));
     }
 
-    void DebugDrawRing(Vector3 center, float radius, Color c)
+    System.Collections.IEnumerator PauseCo(float t)
     {
-        const int steps = 64;
-        Vector3 prev = center + new Vector3(radius, 0, 0);
-        for (int i = 1; i <= steps; i++)
-        {
-            float a = i * Mathf.PI * 2f / steps;
-            Vector3 p = center + new Vector3(Mathf.Cos(a), 0, Mathf.Sin(a)) * radius;
-            Debug.DrawLine(prev + Vector3.up * 0.05f, p + Vector3.up * 0.05f, c, 0, false);
-            prev = p;
-        }
+        paused = true;
+        PushGlobals();
+        yield return new WaitForSeconds(t);
+        paused = false;
     }
-
-    // Доступ врагам (чтобы понять, прошла ли волна)
-    public int ActiveWaveCount => Mathf.Min(origins.Count, 8);
-    public Vector3 GetOrigin(int i) => origins[i];
-    public float GetStartTime(int i) => startTimes[i];
 }
