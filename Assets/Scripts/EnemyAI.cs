@@ -19,6 +19,11 @@ public class EnemyAI : MonoBehaviour
     public int damage = 1;
     [Range(0f, 1f)] public float frontDot = 0.3f;
 
+    [Header("Окно урона")]
+    public float damageWindow = 0.2f;
+    bool damageWindowOpen;
+    float damageWindowUntil;
+
     [Header("Стайджинг (массовка)")]
     public float ringRadius = 5.0f;
     public float ringRadiusJitter = 0.6f;
@@ -184,29 +189,38 @@ public class EnemyAI : MonoBehaviour
         HitFx.ShowRing(transform.position, 0.9f, Color.red, attackCastTime);
         if (anim) anim.SetTrigger("Attack");
 
-        // ждём подготовку удара (анимация уже идёт)
+        // ждём подготовку удара
         yield return new WaitForSeconds(attackCastTime);
 
-        // ждём подготовку
-        float endTime = Time.time + attackCastTime;
-        while (Time.time < endTime)
+        // открываем короткое окно, когда событие может нанести урон
+        damageWindowOpen = true;
+        damageWindowUntil = Time.time + damageWindow;
+
+        // ждём закрытия окна, затем выходим в стейджинг
+        while (Time.time < damageWindowUntil)
         {
             Face(player ? player.position : transform.position + transform.forward);
             yield return null;
         }
 
-        // сам урон пойдёт из события EnemyMeleeHit()
-        // после атаки — назад на периметр
+        damageWindowOpen = false;
         isCasting = false;
         LeaveCombatToStaging();
     }
+
 
     // вызывется Animation Event из клипа "Attack"
     public void EnemyMeleeHit()
     {
         if (!player) return;
 
-        // парирование прямо перед уроном
+        // событие игнорируем, если мы ещё не «разрешили» урон после каста
+        if (!damageWindowOpen) return;
+
+        // (необязательно) чуть сузим окно разово по факту попадания
+        damageWindowOpen = false;
+
+        // парирование прежде, чем наносить урон
         if (player.TryGetComponent<PlayerParry>(out var parry))
         {
             if (parry.TryParry(transform, out float stun))
@@ -233,6 +247,7 @@ public class EnemyAI : MonoBehaviour
             HitFx.ShowRing(ringPos, 0.25f, new Color(0.2f, 0.8f, 1f), 0.18f);
         }
     }
+
 
     public void OnAttackAnimationEnd()
     {
