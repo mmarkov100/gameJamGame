@@ -1,9 +1,6 @@
+using System.Collections.Generic; // NEW
 using UnityEngine;
 
-/// <summary>
-/// Держит ГГ всегда видимым с помощью аддитивного Unlit-материала.
-/// Никакого влияния на окружающий свет.
-/// </summary>
 [RequireComponent(typeof(Renderer))]
 public class PlayerAlwaysGlow : MonoBehaviour
 {
@@ -14,6 +11,7 @@ public class PlayerAlwaysGlow : MonoBehaviour
     Material glowMat;
     Renderer[] rends;
     int intensityID;
+    bool attached = false; // NEW
 
     void Awake()
     {
@@ -26,19 +24,53 @@ public class PlayerAlwaysGlow : MonoBehaviour
 
         intensityID = Shader.PropertyToID("_GlowIntensity");
 
-        foreach (var r in rends)
-        {
-            if (!r) continue;
-            var mats = r.sharedMaterials;
-            System.Array.Resize(ref mats, mats.Length + 1);
-            mats[mats.Length - 1] = glowMat;
-            r.sharedMaterials = mats;
-        }
+        Attach(); // по умолчанию прикрепляем
     }
 
     void Update()
     {
-        // можете анимировать яркость от стамины/хп и т.п.
-        glowMat.SetFloat(intensityID, glowIntensity);
+        if (attached)
+            glowMat.SetFloat(intensityID, glowIntensity);
+    }
+
+    // ——— Управление подавлением ———
+    public void SetSuppressed(bool v) // NEW
+    {
+        if (v) Detach();
+        else Attach();
+    }
+
+    void Attach() // NEW
+    {
+        if (attached) return;
+        foreach (var r in rends)
+        {
+            if (!r) continue;
+            var mats = r.sharedMaterials;
+            // не дублировать
+            if (System.Array.Exists(mats, m => m == glowMat)) continue;
+            System.Array.Resize(ref mats, mats.Length + 1);
+            mats[mats.Length - 1] = glowMat;
+            r.sharedMaterials = mats;
+        }
+        attached = true;
+    }
+
+    void Detach() // NEW
+    {
+        if (!attached) return;
+        foreach (var r in rends)
+        {
+            if (!r) continue;
+            var mats = r.sharedMaterials;
+            int idx = System.Array.FindIndex(mats, m => m == glowMat);
+            if (idx >= 0)
+            {
+                var list = new List<Material>(mats);
+                list.RemoveAt(idx);
+                r.sharedMaterials = list.ToArray();
+            }
+        }
+        attached = false;
     }
 }
