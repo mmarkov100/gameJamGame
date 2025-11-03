@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 4936260489950038582}
   - component: {fileID: 4868808938866470452}
   - component: {fileID: 6251774817717813424}
-  - component: {fileID: 3462903630557514244}
+  - component: {fileID: 5548934542560501750}
   m_Layer: 3
   m_Name: Enemy
   m_TagString: Enemy
@@ -73,7 +73,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -876546973899608171, guid: bcfcfca2e739042e2ab845c3727b47de, type: 3}
+  - {fileID: 2100000, guid: 5c521d799dd796e4e983d337ff9ff436, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -228,7 +228,6 @@ MonoBehaviour:
   glowDuration: 1
   triggerTolerance: 1
   includeChildren: 1
-  shaderName: Custom/SonarUnlit
 --- !u!1001 &1164086299933720047
 PrefabInstance:
   m_ObjectHideFlags: 0
