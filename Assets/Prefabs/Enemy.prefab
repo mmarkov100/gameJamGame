@@ -32,8 +32,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2516792245220702493}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 5.21, y: 1.35, z: 0.19892}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -142,7 +142,7 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 1
+  m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
@@ -195,13 +195,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
   playerTag: Player
-  sightRadius: 20
+  sightRadius: 2000
   faceTurnSpeed: 720
   attackRange: 0.7
   attackCooldown: 3
-  attackCastTime: 0.5
+  attackCastTime: 0.42
   damage: 1
-  frontDot: 0.3
+  frontDot: 0.25
+  damageWindow: 0.2
   ringRadius: 5
   ringRadiusJitter: 0.6
   idleShuffleRadius: 0.5
@@ -369,15 +370,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c64b6f840626b7a44820d0fe5ac51a79, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.00166
+      value: -0.0018
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c64b6f840626b7a44820d0fe5ac51a79, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.00727
+      value: 0.0075
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c64b6f840626b7a44820d0fe5ac51a79, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.00896
+      value: -0.0087
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c64b6f840626b7a44820d0fe5ac51a79, type: 3}
       propertyPath: m_LocalRotation.w
