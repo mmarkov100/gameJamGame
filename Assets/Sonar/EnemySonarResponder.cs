@@ -2,86 +2,88 @@ using System.Collections;
 using UnityEngine;
 
 /// <summary>
-/// Реагирует на прохождение любой активной волны: зажигает врага синим на 1 секунду.
-/// Работает на уровне материала — не освещает окружение.
+/// Вешается на врага. Когда фронт волны проходит по врагу,
+/// включает синюю подсветку на glowDuration секунд (аддитивно, без освещения мира).
 /// </summary>
 [RequireComponent(typeof(Renderer))]
 public class EnemySonarResponder : MonoBehaviour
 {
     [Header("Подсветка")]
     public Color glowColor = new Color(0.4f, 0.8f, 1f, 1f);
-    public float glowIntensity = 1.4f;   // насколько ярче базового
-    public float glowDuration = 1.0f;    // как долго горит после попадания волны
-    public string shaderName = "Custom/SonarUnlit";
+    public float glowIntensity = 1.6f;     // множитель яркости эмиссии
+    public float glowDuration = 1.0f;      // сколько горит после касания волной
+    public float triggerTolerance = 0.9f;  // насколько «толстым» считаем фронт для события
 
+    [Header("Что подсвечивать")]
+    public bool includeChildren = true;
+
+    Material glowMat;
     Renderer[] rends;
-    MaterialPropertyBlock mpb;
-
-    bool isGlowing;
-    float lastTriggerTime = -999f;
-
-    // защита от многократных срабатываний в пределах ширины кольца
-    float rearmDelay = 0.25f;
+    int lastTriggeredWave = -1;
+    int emissionID;
 
     void Awake()
     {
-        rends = GetComponentsInChildren<Renderer>();
-        mpb = new MaterialPropertyBlock();
+        rends = includeChildren ? GetComponentsInChildren<Renderer>(true)
+                                : new[] { GetComponent<Renderer>() };
+
+        // Материал однотонной эмиссии (Unlit), не влияет на освещение
+        glowMat = new Material(Shader.Find("Sonar/UnlitGlow"));
+        glowMat.SetColor("_GlowColor", glowColor);
+        glowMat.SetFloat("_GlowIntensity", glowIntensity);
+
+        emissionID = Shader.PropertyToID("_GlowIntensity");
     }
 
     void Update()
     {
-        var sc = SonarController.Instance;
-        if (sc == null) return;
+        var sonar = SonarController.Instance;
+        if (sonar == null || sonar.paused) return;
 
-        // Проверяем попадание любой волны по горизонту
-        Vector3 p = transform.position;
+        // Уже срабатывали на текущую волну?
+        if (lastTriggeredWave == sonar.WaveIndex) return;
 
-        for (int i = 0; i < sc.ActiveWaveCount; i++)
+        // Волна рядом с этим объектом?
+        if (sonar.IsFrontNearHorizontal(transform.position, sonar.waveWidth * 0.5f + triggerTolerance))
         {
-            Vector3 o = sc.GetOrigin(i);
-            float t0 = sc.GetStartTime(i);
-
-            float age = Time.time - t0;
-            if (age <= 0) continue;
-
-            float r = sc.waveSpeed * age;
-            float d = Vector3.Distance(new Vector3(p.x, 0, p.z), new Vector3(o.x, 0, o.z));
-
-            if (Mathf.Abs(d - r) <= sc.waveWidth * 0.5f)
-            {
-                if (Time.time - lastTriggerTime > rearmDelay)
-                {
-                    lastTriggerTime = Time.time;
-                    if (!isGlowing) StartCoroutine(GlowCo());
-                }
-            }
+            lastTriggeredWave = sonar.WaveIndex;
+            StartCoroutine(GlowCo());
         }
     }
 
     IEnumerator GlowCo()
     {
-        isGlowing = true;
-
-        // Устанавливаем свойства шейдера на время свечения
+        // навешиваем мат как второй (аддитивный) на все рендереры
         foreach (var r in rends)
         {
-            r.GetPropertyBlock(mpb);
-            mpb.SetColor("_SonarColor", glowColor);
-            mpb.SetFloat("_MaxReveal", glowIntensity);
-            r.SetPropertyBlock(mpb);
+            if (!r) continue;
+            var mats = r.sharedMaterials;
+            System.Array.Resize(ref mats, mats.Length + 1);
+            mats[mats.Length - 1] = glowMat;
+            r.sharedMaterials = mats;
         }
 
-        yield return new WaitForSeconds(glowDuration);
+        float t = 0f;
+        while (t < glowDuration)
+        {
+            t += Time.deltaTime;
+            float k = 1f - Mathf.SmoothStep(0f, 1f, t / glowDuration); // плавное затухание
+            glowMat.SetFloat(emissionID, glowIntensity * Mathf.Max(0.0001f, k));
+            yield return null;
+        }
 
-        // Возврат к обычным значениям
+        // снимаем мат
         foreach (var r in rends)
         {
-            r.GetPropertyBlock(mpb);
-            mpb.SetFloat("_MaxReveal", 0f); // только от волн (а волна уже ушла)
-            r.SetPropertyBlock(mpb);
+            if (!r) continue;
+            var mats = r.sharedMaterials;
+            int idx = System.Array.FindIndex(mats, m => m == glowMat);
+            if (idx >= 0)
+            {
+                var list = new System.Collections.Generic.List<Material>(mats);
+                list.RemoveAt(idx);
+                r.sharedMaterials = list.ToArray();
+            }
         }
-
-        isGlowing = false;
     }
 }

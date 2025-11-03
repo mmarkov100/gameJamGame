@@ -2,6 +2,8 @@ using UnityEngine;
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
 #endif
+using UnityEngine.Events;
+
 
 public class PlayerParry : MonoBehaviour
 {
@@ -19,6 +21,10 @@ public class PlayerParry : MonoBehaviour
     float riposteUntil;
     public bool InRiposteWindow => Time.time < riposteUntil;
     public Animator anim;
+
+    [Header("Events")]
+    public UnityEvent OnParrySuccess;
+
 
     float parryActiveUntil = -1f;
     float parryReadyTime = 0f;           // когда способность снова доступна
@@ -70,6 +76,9 @@ public class PlayerParry : MonoBehaviour
         parryActiveUntil = -1f; // закрываем окно
 
         riposteUntil = Time.time + riposteWindow;
+
+        OnParrySuccess?.Invoke();
+
 
         return true;
     }
