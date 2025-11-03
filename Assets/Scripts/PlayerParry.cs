@@ -13,6 +13,11 @@ public class PlayerParry : MonoBehaviour
     public float stunDuration = 3f;      // длительность стана врага
     public float autoFaceTurnSpeed = 9999f;
 
+    [Header("Допуски")]
+    public float postImpactGrace = 0.06f; // 60 мс «позднего» парри
+
+    float lastParryPressTime = -999f;
+
     [Header("Кулдаун")]
     public float parryCooldown = 2f;     // КД отражения в секундах
 
@@ -26,24 +31,26 @@ public class PlayerParry : MonoBehaviour
     public UnityEvent OnParrySuccess;
 
 
-    float parryActiveUntil = -1f;
+    //float parryActiveUntil = -1f;
     float parryReadyTime = 0f;           // когда способность снова доступна
 
     void Awake() { if (!anim) anim = GetComponent<Animator>(); }
     void Update()
     {
         bool parryPressed =
+#if ENABLE_INPUT_SYSTEM
             Mouse.current != null && Mouse.current.rightButton.wasPressedThisFrame;
+#else
+        Input.GetMouseButtonDown(1);
+#endif
 
-        // проверяем, не на КД ли способность
         if (parryPressed && Time.time >= parryReadyTime)
         {
-            parryActiveUntil = Time.time + parryWindow;
-            parryReadyTime = Time.time + parryCooldown; // запускаем КД
+            lastParryPressTime = Time.time;              // запоминаем момент нажатия
+            parryReadyTime = Time.time + parryCooldown;
 
-            // FX окно парирования
             HitFx.ShowRing(transform.position, parryRadius, new Color(0.2f, 1f, 1f), parryWindow);
-            anim.SetTrigger("Deflect"); // телеграф анимации щита/стойки
+            if (anim) anim.SetTrigger("Deflect");
         }
     }
 
@@ -51,17 +58,18 @@ public class PlayerParry : MonoBehaviour
     {
         stun = 0f;
 
-        // окно парирования закрыто?
-        if (Time.time > parryActiveUntil)
-            return false;
+        // нажатие должно быть не раньше, чем за parryWindow до удара,
+        // и не позже, чем postImpactGrace после удара
+        float dt = Time.time - lastParryPressTime;
+        bool inTime = (dt >= 0f && dt <= parryWindow) || (dt < 0f && -dt <= postImpactGrace);
+        if (!inTime) return false;
 
-        // проверяем дистанцию
+        // дистанция
         Vector3 a = transform.position; a.y = 0;
         Vector3 b = enemy.position; b.y = 0;
-        float dist = Vector3.Distance(a, b);
-        if (dist > parryRadius) return false;
+        if (Vector3.Distance(a, b) > parryRadius) return false;
 
-        // авто-поворот к врагу
+        // авто-фейс
         Vector3 dir = (b - a);
         if (dir.sqrMagnitude > 0.001f)
         {
@@ -69,17 +77,12 @@ public class PlayerParry : MonoBehaviour
             transform.rotation = Quaternion.RotateTowards(transform.rotation, look, autoFaceTurnSpeed);
         }
 
-        // FX успешного парирования
         HitFx.HitSpark(transform.position + Vector3.up * 0.8f, new Color(0.2f, 1f, 1f), 0.3f, 0.25f);
 
         stun = stunDuration;
-        parryActiveUntil = -1f; // закрываем окно
-
         riposteUntil = Time.time + riposteWindow;
 
         OnParrySuccess?.Invoke();
-
-
         return true;
     }
 }

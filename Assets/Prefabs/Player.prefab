@@ -139,7 +139,15 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -5829051595182569337, guid: 13c8db77627b87846aa5798e6cee1598, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -5829051595182569337, guid: 13c8db77627b87846aa5798e6cee1598, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: b2a3219509ef34a42b88c89672e87b21, type: 2}
+    - target: {fileID: -5829051595182569337, guid: 13c8db77627b87846aa5798e6cee1598, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: 1d2d431cc024ed04dbfc9943bcb0ada8, type: 2}
     - target: {fileID: 919132149155446097, guid: 13c8db77627b87846aa5798e6cee1598, type: 3}
@@ -252,7 +260,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 84
   m_CollisionDetection: 1
 --- !u!114 &7406142117972408599
 MonoBehaviour:
@@ -320,9 +328,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerParry
   parryWindow: 0.5
-  parryRadius: 1.3
+  parryRadius: 2
   stunDuration: 3
   autoFaceTurnSpeed: 9999
+  postImpactGrace: 0.06
   parryCooldown: 2
   riposteWindow: 0.7
   anim: {fileID: 0}
@@ -357,10 +366,3 @@ MonoBehaviour:
   roomLight: {fileID: 0}
   lightIntensity: 2.5
   parryLightTime: 2
-  m_EditorClassIdentifier: Assembly-CSharp::SonarController
-  waveSpeed: 12
-  waveWidth: 1.2
-  pingInterval: 1.5
-  maxDistance: 40
-  maxWaves: 4
-  drawDebugRings: 0

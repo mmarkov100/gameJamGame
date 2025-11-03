@@ -4,115 +4,115 @@ using UnityEngine.AI;
 
 public class EnemySpawner : MonoBehaviour
 {
-    [Header("Префабы")]
-    public GameObject enemyPrefab;             // префаб "Enemy" (с EnemyAI + NavMeshAgent)
+    [Header("Префаб")]
+    public GameObject enemyPrefab;
 
-    [Header("Арена (XZ) — две противоположные угловые точки")]
-    public Vector2 arenaMin = new Vector2(-21f, -16f); // (xMin, zMin)
-    public Vector2 arenaMax = new Vector2(21f, 16f); // (xMax, zMax)
+    [Header("Зона спавна (две мировые точки)")]
+    public Vector3 zoneA = new Vector3(-4, 0, 0);
+    public Vector3 zoneB = new Vector3(4, 0, 0);
 
-    [Header("Параметры респавна")]
-    public int desiredOnArena = 10;            // целевое число врагов на арене
-    public float checkInterval = 5f;           // раз в N секунд проверять и доспавнивать
-    public int totalRespawnLimit = 20;         // общий лимит респавнов (штук)
-    public float outsideOffset = 1.5f;         // насколько наружу от края арены спавним
-    public float sideEdgePadding = 1.0f;       // отступ от углов по стороне
-    public float perSpawnMinSpacing = 1.0f;    // мин. интервал между точками по стороне
-    public float pointJitter = 0.5f;           // случайный джиттер вдоль стороны
+    [Header("Поддержание численности")]
+    public int desiredOnScene = 10;
+    public int totalRespawnLimit = 20;
+    public float checkInterval = 5f;
+    public bool spawnOnStart = true;
 
-    [Header("Навмеш")]
-    public bool useNavMeshSample = true;       // пытаться прилипнуть к навмешу
-    public float navMeshSampleMaxDistance = 2.0f; // радиус поиска точки навмеша
-    public int navMeshAgentTypeId = 0;         // тип агента (0 — Humanoid по умолчанию)
+    [Header("Учёт врагов")]
+    public string enemyTag = "Enemy";     // поставь этот тег на префаб
 
-    [Header("Высота спавна")]
-    public float raycastStartY = 50f;          // высота, с которой пускаем луч вниз, чтобы найти пол
-    public float raycastDownDistance = 100f;   // длина луча вниз
+    [Header("Раскладка вдоль зоны")]
+    public float sideEdgePadding = 0.5f;
+    public float perSpawnMinSpacing = 1.0f;
+    public float pointJitter = 0.3f;
+
+    [Header("Привязка к поверхности/навмешу")]
+    public bool snapToGround = true;
+    public float raycastStartY = 50f;
+    public float raycastDownDistance = 100f;
+    public bool useNavMeshSample = true;
+    public float navMeshSampleMaxDistance = 2f;
+
+    [Header("Поворот при спавне")]
+    public Transform faceTarget;      // необязательно
+    public bool faceAlongSegment = false;
 
     [Header("Отладка")]
     public bool drawDebug = true;
 
-    enum Side { North, East, South, West }
-    Side nextSide = Side.North;
+    public int RemainingRespawns => Mathf.Max(0, totalRespawnLimit - _totalRespawned);
 
-    float nextCheckTime;
-    int totalRespawned;
+    float _nextCheckTime;
+    int _totalRespawned;
 
     void OnEnable()
     {
-        nextCheckTime = Time.time + checkInterval;
+        _totalRespawned = 0;
+        _nextCheckTime = Time.time + checkInterval;
+
+        if (spawnOnStart)
+            SpawnImmediate(desiredOnScene); // сразу увидишь врагов
     }
 
     void Update()
     {
-        if (enemyPrefab == null) return;
-        if (totalRespawned >= totalRespawnLimit) return;
+        if (!enemyPrefab) return;
+        if (_totalRespawned >= totalRespawnLimit) return;
 
-        if (Time.time < nextCheckTime) return;
-        nextCheckTime = Time.time + checkInterval;
+        if (Time.time < _nextCheckTime) return;
+        _nextCheckTime = Time.time + checkInterval;
 
-        int aliveInside = CountEnemiesInsideArena();
-        int deficit = Mathf.Clamp(desiredOnArena - aliveInside, 0, desiredOnArena);
-
+        int alive = CountAlive();
+        int deficit = Mathf.Clamp(desiredOnScene - alive, 0, desiredOnScene);
         if (deficit <= 0) return;
 
-        // не превышаем лимит общего респавна
-        deficit = Mathf.Min(deficit, totalRespawnLimit - totalRespawned);
+        deficit = Mathf.Min(deficit, totalRespawnLimit - _totalRespawned);
         if (deficit <= 0) return;
 
-        // спавним "пакет" с текущей стороны
-        SpawnBatchOnSide(nextSide, deficit);
-
-        // следующая сторона по кругу
-        nextSide = (Side)(((int)nextSide + 1) % 4);
+        SpawnBatchOnLine(deficit);
     }
 
-    // ---------- Подсчёт врагов внутри арены ----------
-    int CountEnemiesInsideArena()
+    public void SpawnImmediate(int amount)
     {
-        // Либо через CombatDirector (если хочешь):
-        // var enemies = FindObjectsOfType<EnemyAI>(); // достаточно для десятков
-        EnemyAI[] enemies = FindObjectsOfType<EnemyAI>();
-        int count = 0;
-        float xmin = Mathf.Min(arenaMin.x, arenaMax.x);
-        float xmax = Mathf.Max(arenaMin.x, arenaMax.x);
-        float zmin = Mathf.Min(arenaMin.y, arenaMax.y);
-        float zmax = Mathf.Max(arenaMin.y, arenaMax.y);
+        if (!enemyPrefab || amount <= 0) return;
+        amount = Mathf.Min(amount, totalRespawnLimit - _totalRespawned);
+        if (amount <= 0) return;
 
-        foreach (var e in enemies)
-        {
-            if (!e.isActiveAndEnabled) continue;
-            Vector3 p = e.transform.position;
-            if (p.x >= xmin && p.x <= xmax && p.z >= zmin && p.z <= zmax)
-                count++;
-        }
-        return count;
+        SpawnBatchOnLine(amount);
     }
 
-    // ---------- Спавн "пакета" на стороне ----------
-    void SpawnBatchOnSide(Side side, int amount)
+    int CountAlive()
     {
-        // вычисляем параметры стороны (начало/конец отрезка), и смещение наружу
-        GetSideSegment(side, out Vector3 a, out Vector3 b, out Vector3 outward);
+        // Надёжный способ: по тегу (только активные в сцене)
+        if (!string.IsNullOrEmpty(enemyTag))
+            return GameObject.FindGameObjectsWithTag(enemyTag).Length;
 
-        // длина рабочей части сегмента с учётом отступов
-        Vector3 dir = (b - a);
+        // запасной вариант
+        return FindObjectsOfType<EnemyAI>().Length;
+    }
+
+    void SpawnBatchOnLine(int amount)
+    {
+        Vector3 a = zoneA; a.y = 0f;
+        Vector3 b = zoneB; b.y = 0f;
+
+        Vector3 dir = b - a;
         float fullLen = dir.magnitude;
         if (fullLen < 0.01f) return;
 
+        // защитимся от слишком большого padding
+        float maxPadding = Mathf.Max(0f, fullLen * 0.49f);
+        float pad = Mathf.Clamp(sideEdgePadding, 0f, maxPadding);
+
         Vector3 dirNorm = dir / fullLen;
+        float usableLen = Mathf.Max(0f, fullLen - pad * 2f);
+        if (usableLen <= 0.01f) usableLen = 0.01f; // чтобы не отсекалось
+        Vector3 segStart = a + dirNorm * pad;
 
-        float usableLen = Mathf.Max(0f, fullLen - sideEdgePadding * 2f);
-        if (usableLen <= 0.1f) return;
-
-        Vector3 segStart = a + dirNorm * sideEdgePadding;
-
-        // равномерная раскладка + джиттер + минимальный интервал
-        List<Vector3> points = new List<Vector3>(amount);
+        // равномерная раскладка
+        List<Vector3> points = new(amount);
         if (amount == 1)
         {
-            float t = 0.5f + Random.Range(-0.15f, 0.15f);
-            t = Mathf.Clamp01(t);
+            float t = Mathf.Clamp01(0.5f + Random.Range(-0.15f, 0.15f));
             points.Add(segStart + dirNorm * (usableLen * t));
         }
         else
@@ -120,11 +120,10 @@ public class EnemySpawner : MonoBehaviour
             float step = usableLen / amount;
             for (int i = 0; i < amount; i++)
             {
-                float baseDist = step * (i + 0.5f); // центр ячейки
+                float baseDist = step * (i + 0.5f);
                 float jitter = Random.Range(-pointJitter, pointJitter);
                 float pos = Mathf.Clamp(baseDist + jitter, 0f, usableLen);
 
-                // обеспечим минимальный интервал
                 if (i > 0 && pos < (points.Count * step + perSpawnMinSpacing))
                     pos = points.Count * step + perSpawnMinSpacing;
                 pos = Mathf.Min(pos, usableLen);
@@ -133,62 +132,22 @@ public class EnemySpawner : MonoBehaviour
             }
         }
 
-        // спавним в каждой точке (снаружи от арены на offset)
-        foreach (var pOnEdge in points)
+        foreach (var p in points)
         {
-            Vector3 spawnPos = pOnEdge + outward * outsideOffset;
+            Vector3 spawnPos = p;
 
-            // приземляем на пол (луч вниз)
-            spawnPos = SnapToGround(spawnPos, out bool hitGround);
+            if (snapToGround)
+                spawnPos = SnapToGround(spawnPos, out _);
 
-            // опционально — подправляем по навмешу
             if (useNavMeshSample)
                 spawnPos = SnapToNavMesh(spawnPos);
 
-            // финальный инстанс
             SpawnEnemy(spawnPos);
-            totalRespawned++;
-            if (totalRespawned >= totalRespawnLimit) break;
+            _totalRespawned++;
+            if (_totalRespawned >= totalRespawnLimit) break;
         }
     }
 
-    // ---------- Геометрия стороны ----------
-    void GetSideSegment(Side side, out Vector3 a, out Vector3 b, out Vector3 outward)
-    {
-        float xmin = Mathf.Min(arenaMin.x, arenaMax.x);
-        float xmax = Mathf.Max(arenaMin.x, arenaMax.x);
-        float zmin = Mathf.Min(arenaMin.y, arenaMax.y);
-        float zmax = Mathf.Max(arenaMin.y, arenaMax.y);
-
-        switch (side)
-        {
-            case Side.North: // верхняя сторона по Z
-                a = new Vector3(xmin, 0, zmax);
-                b = new Vector3(xmax, 0, zmax);
-                outward = Vector3.forward; // наружу — +Z
-                break;
-
-            case Side.East: // правая сторона по X
-                a = new Vector3(xmax, 0, zmin);
-                b = new Vector3(xmax, 0, zmax);
-                outward = Vector3.right; // наружу — +X
-                break;
-
-            case Side.South: // нижняя сторона по Z
-                a = new Vector3(xmax, 0, zmin);
-                b = new Vector3(xmin, 0, zmin);
-                outward = Vector3.back; // наружу — -Z
-                break;
-
-            default: // West — левая сторона по X
-                a = new Vector3(xmin, 0, zmax);
-                b = new Vector3(xmin, 0, zmin);
-                outward = Vector3.left; // наружу — -X
-                break;
-        }
-    }
-
-    // ---------- Привязка к земле ----------
     Vector3 SnapToGround(Vector3 pos, out bool hit)
     {
         Ray ray = new Ray(new Vector3(pos.x, raycastStartY, pos.z), Vector3.down);
@@ -197,51 +156,64 @@ public class EnemySpawner : MonoBehaviour
             hit = true;
             return rh.point;
         }
-        hit = false;
+        hit = false; // пола без коллайдера? вернём, как есть
         return pos;
     }
 
-    // ---------- Привязка к навмешу ----------
     Vector3 SnapToNavMesh(Vector3 pos)
     {
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(pos, out hit, navMeshSampleMaxDistance, NavMesh.AllAreas))
+        if (NavMesh.SamplePosition(pos, out var hit, navMeshSampleMaxDistance, NavMesh.AllAreas))
             return hit.position;
         return pos;
     }
 
-    // ---------- Инстанс ----------
     void SpawnEnemy(Vector3 worldPos)
     {
         var go = Instantiate(enemyPrefab, worldPos, Quaternion.identity);
-        // при желании: повернуть лицом к центру арены
-        Vector3 center = new Vector3((arenaMin.x + arenaMax.x) * 0.5f, worldPos.y, (arenaMin.y + arenaMax.y) * 0.5f);
-        go.transform.rotation = Quaternion.LookRotation((center - worldPos).normalized, Vector3.up);
+
+        if (faceTarget)
+        {
+            Vector3 to = faceTarget.position; to.y = worldPos.y;
+            go.transform.rotation = Quaternion.LookRotation((to - worldPos).normalized, Vector3.up);
+        }
+        else if (faceAlongSegment)
+        {
+            Vector3 a = zoneA; a.y = worldPos.y;
+            Vector3 b = zoneB; b.y = worldPos.y;
+            Vector3 d = (b - a).normalized;
+            if (d.sqrMagnitude > 0.001f)
+                go.transform.rotation = Quaternion.LookRotation(d, Vector3.up);
+        }
     }
 
-    // ---------- Гизмо ----------
+    [ContextMenu("Spawn Now")]
+    void CtxSpawnNow() => SpawnImmediate(desiredOnScene);
+
     void OnDrawGizmosSelected()
     {
         if (!drawDebug) return;
 
-        float xmin = Mathf.Min(arenaMin.x, arenaMax.x);
-        float xmax = Mathf.Max(arenaMin.x, arenaMax.x);
-        float zmin = Mathf.Min(arenaMin.y, arenaMax.y);
-        float zmax = Mathf.Max(arenaMin.y, arenaMax.y);
+        Vector3 a = zoneA; a.y = 0f;
+        Vector3 b = zoneB; b.y = 0f;
 
-        // прямоугольник арены
-        Gizmos.color = Color.green;
-        Vector3 p1 = new Vector3(xmin, 0, zmin);
-        Vector3 p2 = new Vector3(xmin, 0, zmax);
-        Vector3 p3 = new Vector3(xmax, 0, zmax);
-        Vector3 p4 = new Vector3(xmax, 0, zmin);
-        Gizmos.DrawLine(p1, p2); Gizmos.DrawLine(p2, p3); Gizmos.DrawLine(p3, p4); Gizmos.DrawLine(p4, p1);
+        Gizmos.color = Color.green; Gizmos.DrawLine(a, b);
 
-        // линии «внешнего» офсета
-        Gizmos.color = new Color(1, 0.6f, 0, 0.8f);
-        Gizmos.DrawLine(p2 + Vector3.forward * outsideOffset, p3 + Vector3.forward * outsideOffset); // North
-        Gizmos.DrawLine(p3 + Vector3.right * outsideOffset, p4 + Vector3.right * outsideOffset); // East
-        Gizmos.DrawLine(p4 + Vector3.back * outsideOffset, p1 + Vector3.back * outsideOffset); // South
-        Gizmos.DrawLine(p1 + Vector3.left * outsideOffset, p2 + Vector3.left * outsideOffset); // West
+        Vector3 dir = (b - a);
+        float len = dir.magnitude;
+        if (len > 0.01f)
+        {
+            Vector3 n = dir / len;
+            float pad = Mathf.Clamp(sideEdgePadding, 0f, len * 0.49f);
+            Vector3 s = a + n * pad;
+            Vector3 e = b - n * pad;
+            Gizmos.color = new Color(0, 1, 1, 0.6f);
+            Gizmos.DrawLine(s, e);
+        }
+
+        if (faceTarget)
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(new Vector3(faceTarget.position.x, 0, faceTarget.position.z), 0.25f);
+        }
     }
 }
