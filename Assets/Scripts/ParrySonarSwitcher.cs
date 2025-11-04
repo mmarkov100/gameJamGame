@@ -3,18 +3,24 @@ using UnityEngine;
 
 public class ParrySonarSwitcher : MonoBehaviour
 {
+    [System.Serializable]
+    public struct LightEntry
+    {
+        public Light light;             // источник света
+        public float flashIntensity;    // интенсивность на время вспышки
+    }
+
     [Header("Ссылки")]
     public PlayerParry parry;
 
-    [Tooltip("Все источники света, которые вспыхивают при парировании")]
-    public Light[] roomLights;
+    [Tooltip("Источники света и их индивидуальные интенсивности на время вспышки")]
+    public LightEntry[] lights;         // <-- вместо roomLights + общей интенсивности
 
     [Header("Настройки вспышки")]
-    public float lightIntensity = 2.5f;
     public float parryLightTime = 2.0f;
 
     [Header("Опционально")]
-    public PlayerAlwaysGlow playerGlow; // если пусто — найдем автоматически
+    public PlayerAlwaysGlow playerGlow; // если пусто — найдём автоматически
 
     // ---- ЗВУК ----
     [Header("Звук парирования")]
@@ -25,24 +31,28 @@ public class ParrySonarSwitcher : MonoBehaviour
     [Tooltip("Случайное отклонение высоты тона для разнообразия, 0 = выкл")]
     [Range(0f, 0.3f)] public float pitchJitter = 0.05f;
 
+    // базовые значения для отката
     float[] baseIntensities;
-    bool[] baseEnabledStates;
+    bool[] baseEnabled;
 
     void Awake()
     {
         if (!parry) parry = GetComponent<PlayerParry>();
         if (!playerGlow) playerGlow = FindObjectOfType<PlayerAlwaysGlow>();
 
-        if (roomLights == null) roomLights = new Light[0];
-        baseIntensities = new float[roomLights.Length];
-        baseEnabledStates = new bool[roomLights.Length];
+        if (lights == null) lights = new LightEntry[0];
+        baseIntensities = new float[lights.Length];
+        baseEnabled = new bool[lights.Length];
 
-        for (int i = 0; i < roomLights.Length; i++)
+        for (int i = 0; i < lights.Length; i++)
         {
-            var L = roomLights[i];
+            var L = lights[i].light;
             if (!L) continue;
+
             baseIntensities[i] = L.intensity;
-            baseEnabledStates[i] = L.enabled;
+            baseEnabled[i] = L.enabled;
+
+            // подготовим: включим, но сделаем тёмным
             L.enabled = true;
             L.intensity = 0f;
         }
@@ -51,7 +61,6 @@ public class ParrySonarSwitcher : MonoBehaviour
     // Назначь в PlayerParry.OnParrySuccess
     public void OnParrySuccessHandler()
     {
-        // --- Сначала звук ---
         PlayParrySfx();
 
         if (!gameObject.activeInHierarchy) return;
@@ -65,19 +74,16 @@ public class ParrySonarSwitcher : MonoBehaviour
 
         if (sfxSource)
         {
-            // необязательная лёгкая рандомизация питча
-            float originalPitch = sfxSource.pitch;
+            float p0 = sfxSource.pitch;
             if (pitchJitter > 0f)
-                sfxSource.pitch = Mathf.Clamp(originalPitch + Random.Range(-pitchJitter, pitchJitter), 0.5f, 2f);
+                sfxSource.pitch = Mathf.Clamp(p0 + Random.Range(-pitchJitter, pitchJitter), 0.5f, 2f);
 
             sfxSource.PlayOneShot(parryClip, sfxVolume);
 
-            // вернуть базовый pitch
-            if (pitchJitter > 0f) sfxSource.pitch = originalPitch;
+            if (pitchJitter > 0f) sfxSource.pitch = p0;
         }
         else
         {
-            // запасной вариант: одноразовое 3D-воспроизведение в позиции игрока/скрипта
             AudioSource.PlayClipAtPoint(parryClip, transform.position, sfxVolume);
         }
     }
@@ -91,28 +97,35 @@ public class ParrySonarSwitcher : MonoBehaviour
         if (playerGlow) playerGlow.SetSuppressed(true);
         EnemySonarResponder.SetSuppressed(true);
 
-        // 2) Свет — одна общая интенсивность
-        for (int i = 0; i < roomLights.Length; i++)
+        // Дадим кадр на снятие материалов/эмиссии
+        yield return null;
+
+        // 2) Включаем каждый свет своей интенсивностью
+        for (int i = 0; i < lights.Length; i++)
         {
-            var L = roomLights[i];
+            var entry = lights[i];
+            var L = entry.light;
             if (!L) continue;
-            L.intensity = lightIntensity;
+
+            L.enabled = true;
+            L.intensity = entry.flashIntensity;  // индивидуально!
         }
 
         yield return new WaitForSeconds(parryLightTime);
 
-        // 3) Откат света
-        for (int i = 0; i < roomLights.Length; i++)
+        // 3) Откат света к исходным значениям
+        for (int i = 0; i < lights.Length; i++)
         {
-            var L = roomLights[i];
+            var L = lights[i].light;
             if (!L) continue;
+
             L.intensity = baseIntensities[i];
-            L.enabled = baseEnabledStates[i];
+            L.enabled = baseEnabled[i];
         }
 
-        // 4) Возобновление сонара и подсветок
-        if (sonar) sonar.paused = false;
+        // 4) Возврат эффектов
         EnemySonarResponder.SetSuppressed(false);
         if (playerGlow) playerGlow.SetSuppressed(false);
+        if (sonar) sonar.paused = false;
     }
 }

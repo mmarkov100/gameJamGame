@@ -15,6 +15,36 @@ public class PlayerAttack : MonoBehaviour
     public LayerMask hittableMask = ~0;
     public bool useEnemyTagCheck = true;
 
+    [Header("јудио Ч атака игрока")]
+    public AudioSource sfxSource;
+    public AudioClip attackStartClip;
+    [Range(0f, 1f)] public float attackVolume = 0.9f;
+    [Range(0f, 0.3f)] public float attackPitchJitter = 0.05f;
+
+    void PlayAttackStartSfx()
+    {
+        if (!attackStartClip) return;
+
+        if (sfxSource)
+        {
+            float basePitch = sfxSource.pitch;
+
+            if (attackPitchJitter > 0f)
+                sfxSource.pitch = Mathf.Clamp(basePitch + Random.Range(-attackPitchJitter, attackPitchJitter), 0.5f, 2f);
+
+            sfxSource.PlayOneShot(attackStartClip, attackVolume);
+
+            if (attackPitchJitter > 0f)
+                sfxSource.pitch = basePitch;
+        }
+        else
+        {
+            AudioSource.PlayClipAtPoint(attackStartClip, transform.position, attackVolume);
+        }
+    }
+
+
+
     [Range(10f, 180f)]
     public float coneAngleDeg = 80f;
 
@@ -43,6 +73,7 @@ public class PlayerAttack : MonoBehaviour
         if (parry != null && parry.InRiposteWindow)
             anim.SetTrigger("Riposte");
         else
+            PlayAttackStartSfx();
             anim.SetTrigger("Attack");
     }
     public void MeleeHit() => DoMeleeHit();
