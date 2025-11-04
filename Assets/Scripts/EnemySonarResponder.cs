@@ -3,36 +3,56 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Подсветка врага при прохождении волны сонара через эмиссию материала.
-/// Работает без замены материалов: через MaterialPropertyBlock + _EMISSION.
-/// При паррировании подсветка мгновенно снимается (SetSuppressed).
+/// Вспышка врага при прохождении волны сонара (через Emission).
+/// - Работает с любыми материалами, у которых есть _EmissionColor (URP/Built-in).
+/// - Не требует рендера на самом объекте: может висеть на корне, соберёт детей.
+/// - Глобально подавляется на время парри (SetSuppressed).
+/// - После перезагрузки сцены статика сбрасывается (фикс неработающих вспышек).
 /// </summary>
-[RequireComponent(typeof(Renderer))]
+[DisallowMultipleComponent]
 public class EnemySonarResponder : MonoBehaviour
 {
-    // ==== Глобальный реестр и подавление при парри ====
+    // ===== Глобальное состояние (реестр + подавление) =====
     static readonly List<EnemySonarResponder> _registry = new();
     static bool _suppressed = false;
 
+    /// <summary>Включить/выключить глобальное подавление свечения (напр., при парри).</summary>
     public static void SetSuppressed(bool value)
     {
         _suppressed = value;
         if (value)
         {
-            // Мгновенно погасить всех
-            foreach (var e in _registry) e.StopGlowNow();
+            // мгновенно погасить всех текущих
+            for (int i = 0; i < _registry.Count; i++)
+                if (_registry[i] != null) _registry[i].StopGlowNow();
         }
     }
 
-    [Header("Параметры подсветки")]
-    public Color glowColor = new(0.4f, 0.8f, 1f, 1f);
-    public float glowIntensity = 1.6f;     // множитель яркости
-    public float glowDuration = 1.0f;      // сколько горит после касания
-    public float triggerTolerance = 0.9f;  // половина толщины «фронта»
+    /// <summary>Сброс статики после загрузки любой сцены (важно при Reload).</summary>
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    static void ResetStaticsOnSceneLoad()
+    {
+        _suppressed = false;
+        _registry.Clear();
+    }
+
+    // ===== Параметры подсветки =====
+    [Header("Подсветка при касании волной")]
+    public Color glowColor = new(0.40f, 0.80f, 1.00f, 1f);
+    [Tooltip("Множитель яркости эмиссии")]
+    public float glowIntensity = 1.6f;
+    [Tooltip("Сколько секунд горит после касания")]
+    public float glowDuration = 1.0f;
+    [Tooltip("Добавочная толщина фронта волны (меньше пропусков)")]
+    public float triggerTolerance = 0.9f;
+
+    [Header("Охват рендереров")]
+    [Tooltip("Собирать все Renderer в детях (рекомендуется для корневого объекта врага)")]
     public bool includeChildren = true;
 
+    // ===== Внутреннее =====
     Renderer[] rends;
-    MaterialPropertyBlock mpb;    // <— ВОТ ЭТО ПОЛЕ!
+    MaterialPropertyBlock mpb;
     Coroutine glowCo;
     int lastTriggeredWave = -1;
 
@@ -40,31 +60,35 @@ public class EnemySonarResponder : MonoBehaviour
     {
         if (!_registry.Contains(this)) _registry.Add(this);
     }
+
     void OnDisable()
     {
         _registry.Remove(this);
-        // на всякий случай погасим при выключении
-        StopGlowNow();
+        StopGlowNow(); // на всякий случай погасим при выключении
     }
 
     void Awake()
     {
-        // Собираем рендереры (SkinnedMeshRenderer тоже попадает)
-        rends = includeChildren ? GetComponentsInChildren<Renderer>(true)
-                                : new[] { GetComponent<Renderer>() };
+        rends = includeChildren
+            ? GetComponentsInChildren<Renderer>(true)
+            : GetComponents<Renderer>();
 
-        // ИНИЦИАЛИЗИРУЕМ MPB!
         mpb = new MaterialPropertyBlock();
 
-        // Включим эмиссию на инстансах материалов, чтобы она работала в рантайме
+        // Гарантируем, что эмиссия может работать на инстансах материалов
         foreach (var r in rends)
         {
             if (!r) continue;
-            foreach (var m in r.materials) // ИМЕННО materials (инстансы), а не sharedMaterials
+            foreach (var m in r.materials) // именно materials (инстансы), не sharedMaterials
+            {
+                if (!m) continue;
                 m.EnableKeyword("_EMISSION");
+                if (m.HasProperty("_EmissionColor"))
+                    m.SetColor("_EmissionColor", Color.black);
+            }
         }
 
-        // По умолчанию выключено
+        // стартовое состояние — не светимся
         SetEmission(Color.black);
     }
 
@@ -75,10 +99,10 @@ public class EnemySonarResponder : MonoBehaviour
         var sonar = SonarController.Instance;
         if (sonar == null || sonar.paused) return;
 
-        // защищаем от повторного срабатывания на ту же волну
+        // защитимся от повторного срабатывания на ту же волну
         if (lastTriggeredWave == sonar.WaveIndex) return;
 
-        // фронт рядом по XZ
+        // проверка близости фронта (по XZ)
         if (sonar.IsFrontNearHorizontal(transform.position, sonar.waveWidth * 0.5f + triggerTolerance))
         {
             lastTriggeredWave = sonar.WaveIndex;
@@ -91,13 +115,14 @@ public class EnemySonarResponder : MonoBehaviour
     {
         float t = 0f;
 
-        // старт — сразу включаем максимально
+        // старт — зажечь максимально
         SetEmission(glowColor * glowIntensity);
 
         while (t < glowDuration && !_suppressed)
         {
             t += Time.deltaTime;
-            float k = 1f - Mathf.SmoothStep(0f, 1f, t / glowDuration); // плавное затухание
+            // плавное затухание
+            float k = 1f - Mathf.SmoothStep(0f, 1f, t / glowDuration);
             SetEmission(glowColor * (glowIntensity * Mathf.Max(0.0001f, k)));
             yield return null;
         }
@@ -106,20 +131,18 @@ public class EnemySonarResponder : MonoBehaviour
         glowCo = null;
     }
 
-    /// <summary> Мгновенно погасить подсветку (вызывается при парри). </summary>
+    /// <summary>Мгновенно погасить подсветку (используется при парри и выключении).</summary>
     public void StopGlowNow()
     {
         if (glowCo != null) { StopCoroutine(glowCo); glowCo = null; }
         SetEmission(Color.black);
 
-        // Чтобы во время вспышки света не перетриггериться этой же волной
+        // чтобы в кадр перезагрузки/подавления не перетриггериться текущей волной
         var sonar = SonarController.Instance;
         if (sonar) lastTriggeredWave = sonar.WaveIndex;
     }
 
-    /// <summary>
-    /// Установка эмиссии через MaterialPropertyBlock + управление ключом _EMISSION.
-    /// </summary>
+    // ===== Работа с эмиссией через MPB + ключ _EMISSION =====
     void SetEmission(Color emission)
     {
         foreach (var r in rends)
@@ -130,11 +153,13 @@ public class EnemySonarResponder : MonoBehaviour
             mpb.SetColor("_EmissionColor", emission);
             r.SetPropertyBlock(mpb);
 
-            // Ключ включаем на ИНСТАНСАХ материалов (materials), иначе может не сработать
+            // Включаем/выключаем ключ на инстансах материалов,
+            // чтобы даже не-HDRP/URP шейдеры корректно реагировали.
+            bool on = emission.maxColorComponent > 0f;
             foreach (var m in r.materials)
             {
                 if (!m) continue;
-                if (emission.maxColorComponent > 0f) m.EnableKeyword("_EMISSION");
+                if (on) m.EnableKeyword("_EMISSION");
                 else m.DisableKeyword("_EMISSION");
             }
         }
