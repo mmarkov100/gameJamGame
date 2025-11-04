@@ -307,7 +307,15 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 817961123}
+    - target: {fileID: 7198872099996135854, guid: 237ae0147fbee0241956a0a4b0148e83, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 98216489b330bf54293a89e575fb4326, type: 3}
     - target: {fileID: 7481233771507765910, guid: 237ae0147fbee0241956a0a4b0148e83, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7599985010067561272, guid: 237ae0147fbee0241956a0a4b0148e83, type: 3}
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}

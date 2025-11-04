@@ -12,43 +12,31 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 #endif
 
-/// <summary>
-/// Покадровая печать страниц лора. По клику — следующая страница.
-/// После последней — сигнал LoreSceneController.RequestAdvance().
-/// </summary>
 public class Dialog : MonoBehaviour
 {
     [Header("Text (assign ONE)")]
-    public Text uiText;                 // для UI.Text
+    public Text uiText;
 #if TMP_PRESENT || UNITY_TEXTMESHPRO
-    public TMP_Text tmpText;            // для TextMeshPro
+    public TMP_Text tmpText;
 #endif
 
-    [Header("Source")]
+    [Header("Source text")]
     [TextArea(3, 20)]
-    [Tooltip("Вставляйте [PAGE] для ручного разрыва страниц. Если пусто — используйте Pages.")]
     public string sourceText;
 
-    [Tooltip("Если задать — эти строки станут страницами как есть (sourceText игнорируется).")]
+    [Tooltip("Если не пусто — используется напрямую, sourceText игнорируется.")]
     public List<string> pages = new List<string>();
 
     [Header("Typing")]
-    [Tooltip("Символов в секунду. 0 — показать страницу сразу.")]
     public float charsPerSecond = 40f;
-
-    [Tooltip("Автосплит, если страниц нет и в sourceText нет [PAGE].")]
     public int charactersPerPage = 160;
-
-    [Tooltip("Иконка/стрелка «далее». Включается, когда страница дописана.")]
     public GameObject continueHint;
-
-    [Tooltip("Автозапуск при включении объекта.")]
     public bool startOnEnable = true;
 
-    [Tooltip("Задержка перед началом печати страницы (сек, realtime).")]
+    [Tooltip("Задержка перед началом печати страницы")]
     public float startDelay = 0f;
 
-    [Tooltip("Задержка перед переключением на следующую страницу/сцену (сек, realtime).")]
+    [Tooltip("Задержка после страницы (оставь 0 для моментального перехода)")]
     public float endDelay = 0f;
 
     enum Phase { Idle, Typing, Shown }
@@ -56,7 +44,7 @@ public class Dialog : MonoBehaviour
 
     int currentPage = -1;
     string fullPage = "";
-    Coroutine typing;
+    Coroutine typingRoutine;
 
     void OnEnable()
     {
@@ -66,20 +54,15 @@ public class Dialog : MonoBehaviour
 
     IEnumerator BeginWhenActive()
     {
-        // защита от старта на неактивном объекте
         yield return new WaitUntil(() => isActiveAndEnabled);
         Begin();
     }
 
-    /// <summary>Запустить/перезапустить диалог.</summary>
     public void Begin()
     {
         if (continueHint) continueHint.SetActive(false);
 
-        // приготовить список страниц
-        var prepared = PreparePages();
-        pages = prepared;
-
+        pages = PreparePages();
         currentPage = -1;
         phase = Phase.Idle;
         ShowNextPage();
@@ -87,45 +70,45 @@ public class Dialog : MonoBehaviour
 
     List<string> PreparePages()
     {
-        // приоритет: явные pages из инспектора
         if (pages != null && pages.Count > 0)
             return new List<string>(pages);
 
-        var result = new List<string>();
+        List<string> result = new List<string>();
         if (string.IsNullOrWhiteSpace(sourceText))
             return result;
 
-        // разрывы по [PAGE]
+        // [PAGE] tags
         var manual = sourceText.Split(new string[] { "[PAGE]" }, System.StringSplitOptions.None);
         if (manual.Length > 1)
         {
-            foreach (var p in manual)
+            foreach (var m in manual)
             {
-                var t = p.Trim();
+                var t = m.Trim();
                 if (!string.IsNullOrEmpty(t)) result.Add(t);
             }
             return result;
         }
 
-        // авто-разбиение по словам до charactersPerPage
+        // Auto wrap
         var words = sourceText.Split(' ');
-        var buf = new System.Text.StringBuilder();
+        var buffer = new System.Text.StringBuilder();
         foreach (var w in words)
         {
-            int sep = buf.Length == 0 ? 0 : 1;
-            if (buf.Length + sep + w.Length > Mathf.Max(1, charactersPerPage))
+            int sep = buffer.Length == 0 ? 0 : 1;
+            if (buffer.Length + sep + w.Length > Mathf.Max(1, charactersPerPage))
             {
-                result.Add(buf.ToString());
-                buf.Length = 0;
-                buf.Append(w);
+                result.Add(buffer.ToString());
+                buffer.Length = 0;
+                buffer.Append(w);
             }
             else
             {
-                if (buf.Length > 0) buf.Append(' ');
-                buf.Append(w);
+                if (buffer.Length > 0) buffer.Append(' ');
+                buffer.Append(w);
             }
         }
-        if (buf.Length > 0) result.Add(buf.ToString());
+        if (buffer.Length > 0) result.Add(buffer.ToString());
+
         return result;
     }
 
@@ -133,20 +116,16 @@ public class Dialog : MonoBehaviour
     {
         currentPage++;
 
+        // End of story — tell scene to fade out
         if (currentPage >= pages.Count)
         {
-            // всё — просим LoreSceneController сделать fade и переключить сцену
-            var controller = FindObjectOfType<LoreSceneController>();
-            if (controller != null)
-                controller.RequestAdvance(); // дальше сценой управляет LoreSceneController
-            else
-                Debug.LogWarning("[Dialog] LoreSceneController не найден на сцене.");
+            FindObjectOfType<LoreSceneController>()?.RequestAdvance();
             return;
         }
 
-        fullPage = pages[currentPage] ?? "";
-        if (typing != null) StopCoroutine(typing);
-        typing = StartCoroutine(TypePage());
+        fullPage = pages[currentPage];
+        if (typingRoutine != null) StopCoroutine(typingRoutine);
+        typingRoutine = StartCoroutine(TypePage());
     }
 
     IEnumerator TypePage()
@@ -171,7 +150,7 @@ public class Dialog : MonoBehaviour
 
         while (shown < fullPage.Length)
         {
-            // клик во время печати — раскрыть сразу
+            // fast skip
             if (AnyPressThisFrame())
             {
                 SetText(fullPage);
@@ -186,6 +165,7 @@ public class Dialog : MonoBehaviour
                 shown++;
                 SetText(fullPage.Substring(0, shown));
             }
+
             yield return null;
         }
 
@@ -194,8 +174,8 @@ public class Dialog : MonoBehaviour
 
     void FinishTyping()
     {
+        typingRoutine = null;
         phase = Phase.Shown;
-        typing = null;
         if (continueHint) continueHint.SetActive(true);
     }
 
@@ -206,48 +186,52 @@ public class Dialog : MonoBehaviour
         switch (phase)
         {
             case Phase.Typing:
-                // завершить страницу мгновенно
                 SetText(fullPage);
                 FinishTyping();
                 break;
 
             case Phase.Shown:
-                // перейти к следующей
-                StartCoroutine(AdvanceAfterDelay());
+                if (continueHint) continueHint.SetActive(false);
+
+                if (endDelay <= 0f)
+                {
+                    phase = Phase.Idle;
+                    ShowNextPage(); // instant switch ⚡
+                }
+                else
+                {
+                    StartCoroutine(NextDelayed());
+                }
                 break;
         }
     }
 
-    IEnumerator AdvanceAfterDelay()
+    IEnumerator NextDelayed()
     {
-        if (continueHint) continueHint.SetActive(false);
-        if (endDelay > 0f)
-            yield return new WaitForSecondsRealtime(endDelay);
+        yield return new WaitForSecondsRealtime(endDelay);
         phase = Phase.Idle;
         ShowNextPage();
     }
 
-    // ---------- helpers ----------
-
     void SetText(string s)
     {
 #if TMP_PRESENT || UNITY_TEXTMESHPRO
-        if (tmpText != null) tmpText.text = s;
+        if (tmpText) tmpText.text = s;
 #endif
-        if (uiText != null) uiText.text = s;
+        if (uiText) uiText.text = s;
     }
 
     bool AnyPressThisFrame()
     {
 #if ENABLE_INPUT_SYSTEM
         if (Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame) return true;
-        if (Mouse.current != null && (Mouse.current.leftButton.wasPressedThisFrame || Mouse.current.rightButton.wasPressedThisFrame)) return true;
+        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame) return true;
         if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.wasPressedThisFrame) return true;
+
         if (Gamepad.current != null)
-        {
             foreach (var c in Gamepad.current.allControls)
                 if (c is ButtonControl b && b.wasPressedThisFrame) return true;
-        }
+
         return false;
 #else
         return Input.anyKeyDown || Input.GetMouseButtonDown(0) || Input.touchCount > 0;

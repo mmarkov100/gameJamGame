@@ -2143,7 +2143,7 @@ PrefabInstance:
     - target: {fileID: 1256500128915582439, guid: 6dd765428b6cac842a068fa4f8b443c5, type: 3}
       propertyPath: m_Resource
       value: 
-      objectReference: {fileID: 8300000, guid: 4f84389645ddd494fa4facdf16b5aa02, type: 3}
+      objectReference: {fileID: 8300000, guid: 4eca80f9a0400d2449287937a122e2cf, type: 3}
     - target: {fileID: 1256500128915582439, guid: 6dd765428b6cac842a068fa4f8b443c5, type: 3}
       propertyPath: m_PlayOnAwake
       value: 1
@@ -2192,7 +2192,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: MusicController
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6953227108203213541, guid: 6dd765428b6cac842a068fa4f8b443c5, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

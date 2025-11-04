@@ -19,25 +19,25 @@ EditorBuildSettings:
     guid: 86ea4e527f4736947b61d9bbca008a95
   - enabled: 1
     path: Assets/Scenes/lore_1.unity
-    guid: a6f291b171501814394922757f8fc12b
+    guid: f3baf8d5060b9d54992754b6462a8f93
   - enabled: 1
     path: Assets/Scenes/Wave 2.unity
     guid: 85b7720e4aa541e4ab488c4de6f9c132
   - enabled: 1
     path: Assets/Scenes/lore_2.unity
-    guid: 570d5b9c71723f64baab0679d760df0a
+    guid: c8cd53682208c4c408b3eb9859eea5ca
   - enabled: 1
     path: Assets/Scenes/Wave 3.unity
     guid: 58bc5a17141df114faa99e8953022382
   - enabled: 1
     path: Assets/Scenes/lore_3.unity
-    guid: 9d92c3185604fe74db97fec9a208ea7c
+    guid: 564b85f2f8d81be42957d6973f6df1cc
   - enabled: 1
     path: Assets/Scenes/Wave 4.unity
     guid: 6068c1c398312814b9a3651c0e7772fc
   - enabled: 1
-    path: Assets/Scenes/lore_5.unity
-    guid: 5e5c22b9d6d543948bca4940b76f9845
+    path: Assets/Scenes/lore_4.unity
+    guid: 1e46bc8c217e9b3488af0dfa0e2aed2f
   - enabled: 1
     path: Assets/Scenes/Titles.unity
     guid: 4e1da7e1681eff841a8b6a5fb876b974
