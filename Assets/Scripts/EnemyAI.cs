@@ -63,6 +63,7 @@ public class EnemyAI : MonoBehaviour
     [Header("Аудио")]
     public AudioSource sfxSource;
     public AudioClip attackStartClip;
+    public float startSfxDelay = 0.15f; // задержка перед старт-звуком
     [Range(0f, 1f)] public float startVolume = 0.9f;
     [Range(0f, 0.3f)] public float startPitchJitter = 0.05f;
 
@@ -74,17 +75,31 @@ public class EnemyAI : MonoBehaviour
     {
         if (!attackStartClip) return;
         if (Time.time - _lastStartSfxTime < minStartSfxInterval) return;
+
         _lastStartSfxTime = Time.time;
+
+        // запускаем звук с задержкой
+        StartCoroutine(PlayStartSfxDelayed());
+    }
+
+    IEnumerator PlayStartSfxDelayed()
+    {
+        yield return new WaitForSeconds(startSfxDelay);
 
         if (sfxSource)
         {
             float p0 = sfxSource.pitch;
+
             if (startPitchJitter > 0f)
-                sfxSource.pitch = Mathf.Clamp(p0 + Random.Range(-startPitchJitter, startPitchJitter), 0.5f, 2f);
+                sfxSource.pitch = Mathf.Clamp(
+                    p0 + Random.Range(-startPitchJitter, startPitchJitter),
+                    0.5f, 2f
+                );
 
             sfxSource.PlayOneShot(attackStartClip, startVolume);
 
-            if (startPitchJitter > 0f) sfxSource.pitch = p0;
+            if (startPitchJitter > 0f)
+                sfxSource.pitch = p0;
         }
         else
         {
