@@ -49,7 +49,7 @@ public class PlayerParry : MonoBehaviour
             lastParryPressTime = Time.time;              // запоминаем момент нажатия
             parryReadyTime = Time.time + parryCooldown;
 
-            HitFx.ShowRing(transform.position, parryRadius, new Color(0.2f, 1f, 1f), parryWindow);
+            //HitFx.ShowRing(transform.position, parryRadius, new Color(0.2f, 1f, 1f), parryWindow);
             if (anim) anim.SetTrigger("Deflect");
         }
     }
@@ -77,7 +77,7 @@ public class PlayerParry : MonoBehaviour
             transform.rotation = Quaternion.RotateTowards(transform.rotation, look, autoFaceTurnSpeed);
         }
 
-        HitFx.HitSpark(transform.position + Vector3.up * 0.8f, new Color(0.2f, 1f, 1f), 0.3f, 0.25f);
+        //HitFx.HitSpark(transform.position + Vector3.up * 0.8f, new Color(0.2f, 1f, 1f), 0.3f, 0.25f);
 
         stun = stunDuration;
         riposteUntil = Time.time + riposteWindow;
