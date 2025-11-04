@@ -598,7 +598,7 @@ MonoBehaviour:
   playerGlow: {fileID: 0}
   sfxSource: {fileID: 8062896755148202045}
   parryClip: {fileID: 8300000, guid: 8bb3f7921d1e6824d92ccb1ff169797f, type: 3}
-  sfxVolume: 0.9
+  sfxVolume: 0.923
   pitchJitter: 0.05
 --- !u!82 &8062896755148202045
 AudioSource:

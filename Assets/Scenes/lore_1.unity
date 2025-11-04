@@ -148,8 +148,8 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 054fbd9e0451f4043906a588f59c3551, type: 3}
-  m_PlayOnAwake: 0
-  m_Volume: 1
+  m_PlayOnAwake: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -622,7 +622,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1156884095709330594, guid: 237ae0147fbee0241956a0a4b0148e83, type: 3}
       propertyPath: m_Text
-      value: "\u0445\u0443\u0439\u0445\u0443\u0439\u0445\u0443\u0439\u0445\u0443\u0439\u0445\u0443\u0439\u0445"
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2465629403667049621, guid: 237ae0147fbee0241956a0a4b0148e83, type: 3}
       propertyPath: m_Name
@@ -826,7 +826,7 @@ PrefabInstance:
       objectReference: {fileID: 1282117333}
     - target: {fileID: 8937464467215196543, guid: 237ae0147fbee0241956a0a4b0148e83, type: 3}
       propertyPath: m_Enabled
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8937464467215196543, guid: 237ae0147fbee0241956a0a4b0148e83, type: 3}
       propertyPath: m_EffectColor.a

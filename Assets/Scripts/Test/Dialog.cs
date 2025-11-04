@@ -9,7 +9,6 @@ using TMPro;
 
 #if ENABLE_INPUT_SYSTEM
 using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Controls;
 #endif
 
 public class Dialog : MonoBehaviour
@@ -21,25 +20,29 @@ public class Dialog : MonoBehaviour
 #endif
 
     [Header("Source text")]
-    [TextArea(3, 20)]
-    public string sourceText;
-
+    [TextArea(3, 20)] public string sourceText;
     [Tooltip("Если не пусто — используется напрямую, sourceText игнорируется.")]
     public List<string> pages = new List<string>();
 
     [Header("Typing")]
+    [Tooltip("Символов в секунду. 0 — показать страницу сразу.")]
     public float charsPerSecond = 40f;
+    [Tooltip("При отсутствии [PAGE] автосплит по символам.")]
     public int charactersPerPage = 160;
+
+    [Tooltip("Иконка «далее», показывается когда страница допечатана.")]
     public GameObject continueHint;
+
+    [Tooltip("Автозапуск печати при включении объекта.")]
     public bool startOnEnable = true;
 
-    [Tooltip("Задержка перед началом печати страницы")]
+    [Tooltip("Задержка перед началом печати страницы, сек (realtime).")]
     public float startDelay = 0f;
 
-    [Tooltip("Задержка после страницы (оставь 0 для моментального перехода)")]
+    [Tooltip("Задержка после страницы, сек (оставь 0 для мгновенного переключения после пробела).")]
     public float endDelay = 0f;
 
-    enum Phase { Idle, Typing, Shown }
+    enum Phase { Idle, Typing, Shown, AwaitLastConfirm }
     Phase phase = Phase.Idle;
 
     int currentPage = -1;
@@ -61,7 +64,6 @@ public class Dialog : MonoBehaviour
     public void Begin()
     {
         if (continueHint) continueHint.SetActive(false);
-
         pages = PreparePages();
         currentPage = -1;
         phase = Phase.Idle;
@@ -73,11 +75,10 @@ public class Dialog : MonoBehaviour
         if (pages != null && pages.Count > 0)
             return new List<string>(pages);
 
-        List<string> result = new List<string>();
-        if (string.IsNullOrWhiteSpace(sourceText))
-            return result;
+        var result = new List<string>();
+        if (string.IsNullOrWhiteSpace(sourceText)) return result;
 
-        // [PAGE] tags
+        // ручные разрывы
         var manual = sourceText.Split(new string[] { "[PAGE]" }, System.StringSplitOptions.None);
         if (manual.Length > 1)
         {
@@ -89,26 +90,27 @@ public class Dialog : MonoBehaviour
             return result;
         }
 
-        // Auto wrap
+        // автосплит
         var words = sourceText.Split(' ');
-        var buffer = new System.Text.StringBuilder();
+        var buf = new System.Text.StringBuilder();
+        int maxChars = Mathf.Max(1, charactersPerPage);
+
         foreach (var w in words)
         {
-            int sep = buffer.Length == 0 ? 0 : 1;
-            if (buffer.Length + sep + w.Length > Mathf.Max(1, charactersPerPage))
+            int sep = buf.Length == 0 ? 0 : 1;
+            if (buf.Length + sep + w.Length > maxChars)
             {
-                result.Add(buffer.ToString());
-                buffer.Length = 0;
-                buffer.Append(w);
+                result.Add(buf.ToString());
+                buf.Length = 0;
+                buf.Append(w);
             }
             else
             {
-                if (buffer.Length > 0) buffer.Append(' ');
-                buffer.Append(w);
+                if (buf.Length > 0) buf.Append(' ');
+                buf.Append(w);
             }
         }
-        if (buffer.Length > 0) result.Add(buffer.ToString());
-
+        if (buf.Length > 0) result.Add(buf.ToString());
         return result;
     }
 
@@ -116,14 +118,16 @@ public class Dialog : MonoBehaviour
     {
         currentPage++;
 
-        // End of story — tell scene to fade out
         if (currentPage >= pages.Count)
         {
-            FindObjectOfType<LoreSceneController>()?.RequestAdvance();
+            // Все страницы показаны — ждём ПРОБЕЛ для перехода в следующую сцену
+            phase = Phase.AwaitLastConfirm;
+            if (continueHint) continueHint.SetActive(true);
+            SetText(""); // можно оставить последнюю страницу, но чаще логичнее очистить
             return;
         }
 
-        fullPage = pages[currentPage];
+        fullPage = pages[currentPage] ?? "";
         if (typingRoutine != null) StopCoroutine(typingRoutine);
         typingRoutine = StartCoroutine(TypePage());
     }
@@ -150,8 +154,7 @@ public class Dialog : MonoBehaviour
 
         while (shown < fullPage.Length)
         {
-            // fast skip
-            if (AnyPressThisFrame())
+            if (SpacePressedThisFrame())
             {
                 SetText(fullPage);
                 FinishTyping();
@@ -165,7 +168,6 @@ public class Dialog : MonoBehaviour
                 shown++;
                 SetText(fullPage.Substring(0, shown));
             }
-
             yield return null;
         }
 
@@ -181,7 +183,7 @@ public class Dialog : MonoBehaviour
 
     void Update()
     {
-        if (!AnyPressThisFrame()) return;
+        if (!SpacePressedThisFrame()) return;
 
         switch (phase)
         {
@@ -192,16 +194,20 @@ public class Dialog : MonoBehaviour
 
             case Phase.Shown:
                 if (continueHint) continueHint.SetActive(false);
-
                 if (endDelay <= 0f)
                 {
                     phase = Phase.Idle;
-                    ShowNextPage(); // instant switch ⚡
+                    ShowNextPage(); // мгновенно, но по ПРОБЕЛУ
                 }
                 else
                 {
                     StartCoroutine(NextDelayed());
                 }
+                break;
+
+            case Phase.AwaitLastConfirm:
+                if (continueHint) continueHint.SetActive(false);
+                StartCoroutine(AdvanceToNextScene());
                 break;
         }
     }
@@ -213,6 +219,14 @@ public class Dialog : MonoBehaviour
         ShowNextPage();
     }
 
+    IEnumerator AdvanceToNextScene()
+    {
+        if (endDelay > 0f)
+            yield return new WaitForSecondsRealtime(endDelay);
+
+        FindObjectOfType<LoreSceneController>()?.RequestAdvance();
+    }
+
     void SetText(string s)
     {
 #if TMP_PRESENT || UNITY_TEXTMESHPRO
@@ -221,20 +235,13 @@ public class Dialog : MonoBehaviour
         if (uiText) uiText.text = s;
     }
 
-    bool AnyPressThisFrame()
+    // --------- только ПРОБЕЛ ---------
+    bool SpacePressedThisFrame()
     {
 #if ENABLE_INPUT_SYSTEM
-        if (Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame) return true;
-        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame) return true;
-        if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.wasPressedThisFrame) return true;
-
-        if (Gamepad.current != null)
-            foreach (var c in Gamepad.current.allControls)
-                if (c is ButtonControl b && b.wasPressedThisFrame) return true;
-
-        return false;
+        return Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame;
 #else
-        return Input.anyKeyDown || Input.GetMouseButtonDown(0) || Input.touchCount > 0;
+        return Input.GetKeyDown(KeyCode.Space);
 #endif
     }
 }
