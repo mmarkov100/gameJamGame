@@ -246,7 +246,7 @@ MonoBehaviour:
   moveBlendDamp: 0.1
   sfxSource: {fileID: 3347047990622118882}
   attackStartClip: {fileID: 8300000, guid: 3ddb599e328ccbc45942df8e69b81cac, type: 3}
-  startSfxDelay: 1
+  startSfxDelay: 0.2
   startVolume: 0.5
   startPitchJitter: 0.05
   minStartSfxInterval: 0.15
