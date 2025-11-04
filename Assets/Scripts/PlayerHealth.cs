@@ -35,6 +35,7 @@ public class PlayerHealth : MonoBehaviour
                 rb.isKinematic = true;
 
             gameObject.SetActive(false);
+            FindObjectOfType<ReloadSceneOnDeath>().OnPlayerDeath();
         }
     }
 }
