@@ -1398,7 +1398,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &464506676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2461,16 +2461,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e3466b29e512da48ab898668ef0288e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SonarController
-  player: {fileID: 869466949}
+  origin: {fileID: 0}
   waveSpeed: 8
-  waveWidth: 0.5
   waveInterval: 1.2
-  tailFade: -1
-  sonarColor: {r: 1, g: 1, b: 1, a: 1}
-  sonarIntensity: 1.99
-  worldDarkness: 0
-  autoStart: 1
+  waveWidth: 0.5
+  maxDistance: 100
   paused: 0
+  autoFindPlayer: 1
+  drawGizmos: 1
+  gizmoColor: {r: 0.2, g: 0.6, b: 1, a: 0.6}
 --- !u!4 &770794927
 Transform:
   m_ObjectHideFlags: 0
@@ -2708,6 +2707,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dojo Final (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7339356831882890532, guid: 44568fb21dc25954ea6d8f40bcdf2b7c, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7339356831882890532, guid: 44568fb21dc25954ea6d8f40bcdf2b7c, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: d2acf0e8350a2da4a9856bc37ecc0cea, type: 2}
     - target: {fileID: 8247994413960396516, guid: 44568fb21dc25954ea6d8f40bcdf2b7c, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
@@ -2908,6 +2915,10 @@ PrefabInstance:
     - target: {fileID: 2900947321724163185, guid: 6a98dba7417959e47b7334d733dcd7fc, type: 3}
       propertyPath: m_Name
       value: Lampa (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2900947321724163185, guid: 6a98dba7417959e47b7334d733dcd7fc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

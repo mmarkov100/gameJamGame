@@ -802,6 +802,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Dojo Final (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 7339356831882890532, guid: 44568fb21dc25954ea6d8f40bcdf2b7c, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7339356831882890532, guid: 44568fb21dc25954ea6d8f40bcdf2b7c, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: d2acf0e8350a2da4a9856bc37ecc0cea, type: 2}
     - target: {fileID: 8247994413960396516, guid: 44568fb21dc25954ea6d8f40bcdf2b7c, type: 3}
       propertyPath: m_Materials.Array.size
       value: 2
