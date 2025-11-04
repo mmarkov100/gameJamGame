@@ -19,7 +19,7 @@ public class FinalWaveOneShotKill : MonoBehaviour
     // --- авто-детект здоровья ---
     Component _healthComp;
     FieldInfo _currentHpField, _hpField, _healthField, _maxHpField, _maxHealthField;
-    PropertyInfo _currentHpProp, _hpProp, _healthProp, _maxHpProp, _maxHealthProp;
+    PropertyInfo _currentHpProp, _hpProp, _healthProp, _maxHpProp, _maxHealthProp;s
     MethodInfo _setHealthMethod; // SetHealth(int) если вдруг есть
 
     void Awake()

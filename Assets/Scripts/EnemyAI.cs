@@ -236,8 +236,8 @@ public class EnemyAI : MonoBehaviour
         stunUntil = Time.time + seconds;
         isCasting = false;
         agent.isStopped = true;
-        HitFx.ShowRing(transform.position, 0.8f, new Color(0.2f, 1f, 1f), 0.3f);
-        HitFx.FlashRenderers(gameObject, new Color(0.6f, 0.9f, 1f), 0.12f);
+        //HitFx.ShowRing(transform.position, 0.8f, new Color(0.2f, 1f, 1f), 0.3f);
+        //HitFx.FlashRenderers(gameObject, new Color(0.6f, 0.9f, 1f), 0.12f);
         SetState(State.Stunned);
     }
 
@@ -250,7 +250,7 @@ public class EnemyAI : MonoBehaviour
         SetState(State.Attacking);
         agent.isStopped = true;
 
-        HitFx.ShowRing(transform.position, 0.9f, Color.red, attackCastTime);
+        //HitFx.ShowRing(transform.position, 0.9f, Color.red, attackCastTime);
         if (anim) anim.SetTrigger("Attack");
 
         // ждём подготовку удара
@@ -303,12 +303,12 @@ public class EnemyAI : MonoBehaviour
         if (inRange && inFront && player.TryGetComponent<PlayerHealth>(out var hp))
         {
             hp.TakeDamage(damage);
-            HitFx.HitSpark(player.position + Vector3.up * 0.3f, Color.red, 0.25f, 0.25f);
+            //HitFx.HitSpark(player.position + Vector3.up * 0.3f, Color.red, 0.25f, 0.25f);
         }
         else
         {
             Vector3 ringPos = transform.position + Vector3.up * 0.01f + transform.forward * (attackRange * 0.7f);
-            HitFx.ShowRing(ringPos, 0.25f, new Color(0.2f, 0.8f, 1f), 0.18f);
+            //HitFx.ShowRing(ringPos, 0.25f, new Color(0.2f, 0.8f, 1f), 0.18f);
         }
     }
 

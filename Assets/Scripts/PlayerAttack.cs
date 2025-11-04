@@ -86,7 +86,7 @@ public class PlayerAttack : MonoBehaviour
 
         // FX
         Vector3 ringPos = transform.position + Vector3.up * 0.01f + transform.forward * (range * 0.7f);
-        HitFx.ShowRing(ringPos, Mathf.Max(radius * 1.2f, 0.25f), new Color(0.2f, 0.8f, 1f), 0.18f);
+        //HitFx.ShowRing(ringPos, Mathf.Max(radius * 1.2f, 0.25f), new Color(0.2f, 0.8f, 1f), 0.18f);
 
         Collider[] hits = Physics.OverlapCapsule(a, b, radius, hittableMask, QueryTriggerInteraction.Ignore);
         float cosThreshold = Mathf.Cos(coneAngleDeg * 0.5f * Mathf.Deg2Rad);
@@ -124,7 +124,7 @@ public class PlayerAttack : MonoBehaviour
 
         if (bestEnemy != null)
         {
-            HitFx.HitSpark(bestHitPoint, Color.yellow);
+            //HitFx.HitSpark(bestHitPoint, Color.yellow);
             bestEnemy.TakeDamage(damage, bestHitPoint, -transform.forward);
         }
     }
