@@ -1525,6 +1525,87 @@ PrefabInstance:
       addedObject: {fileID: 1248750310}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6a98dba7417959e47b7334d733dcd7fc, type: 3}
+--- !u!1001 &530321837
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 795059573036619796, guid: a6674ef1b002ad34f9e5a06f0f8217da, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -6.68
+      objectReference: {fileID: 0}
+    - target: {fileID: 795059573036619796, guid: a6674ef1b002ad34f9e5a06f0f8217da, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.01737
+      objectReference: {fileID: 0}
+    - target: {fileID: 795059573036619796, guid: a6674ef1b002ad34f9e5a06f0f8217da, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -5.09589
+      objectReference: {fileID: 0}
+    - target: {fileID: 795059573036619796, guid: a6674ef1b002ad34f9e5a06f0f8217da, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 795059573036619796, guid: a6674ef1b002ad34f9e5a06f0f8217da, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 795059573036619796, guid: a6674ef1b002ad34f9e5a06f0f8217da, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 795059573036619796, guid: a6674ef1b002ad34f9e5a06f0f8217da, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 795059573036619796, guid: a6674ef1b002ad34f9e5a06f0f8217da, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 795059573036619796, guid: a6674ef1b002ad34f9e5a06f0f8217da, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 795059573036619796, guid: a6674ef1b002ad34f9e5a06f0f8217da, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1554518813837077163, guid: a6674ef1b002ad34f9e5a06f0f8217da, type: 3}
+      propertyPath: m_Name
+      value: WaveSceneController
+      objectReference: {fileID: 0}
+    - target: {fileID: 3856922784769721055, guid: a6674ef1b002ad34f9e5a06f0f8217da, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 776293484}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1285759615201250139, guid: a6674ef1b002ad34f9e5a06f0f8217da, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 530321839}
+  m_SourcePrefab: {fileID: 100100000, guid: a6674ef1b002ad34f9e5a06f0f8217da, type: 3}
+--- !u!1 &530321838 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1285759615201250139, guid: a6674ef1b002ad34f9e5a06f0f8217da, type: 3}
+  m_PrefabInstance: {fileID: 530321837}
+  m_PrefabAsset: {fileID: 0}
+--- !u!225 &530321839
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 530321838}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &551894534
 GameObject:
   m_ObjectHideFlags: 0
@@ -2717,6 +2798,10 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7544897107852993511, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
+      propertyPath: lights.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 7544897107852993511, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
       propertyPath: roomLights.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -2748,6 +2833,42 @@ PrefabInstance:
       propertyPath: 'roomLights.Array.data[6]'
       value: 
       objectReference: {fileID: 1186711129}
+    - target: {fileID: 7544897107852993511, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
+      propertyPath: lights.Array.data[0].light
+      value: 
+      objectReference: {fileID: 723405165}
+    - target: {fileID: 7544897107852993511, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
+      propertyPath: lights.Array.data[1].light
+      value: 
+      objectReference: {fileID: 1494540573}
+    - target: {fileID: 7544897107852993511, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
+      propertyPath: lights.Array.data[2].light
+      value: 
+      objectReference: {fileID: 186355179}
+    - target: {fileID: 7544897107852993511, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
+      propertyPath: lights.Array.data[3].light
+      value: 
+      objectReference: {fileID: 855808153}
+    - target: {fileID: 7544897107852993511, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
+      propertyPath: lights.Array.data[4].light
+      value: 
+      objectReference: {fileID: 1248750312}
+    - target: {fileID: 7544897107852993511, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
+      propertyPath: lights.Array.data[5].light
+      value: 
+      objectReference: {fileID: 1214641299}
+    - target: {fileID: 7544897107852993511, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
+      propertyPath: lights.Array.data[6].light
+      value: 
+      objectReference: {fileID: 1061589352}
+    - target: {fileID: 7544897107852993511, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
+      propertyPath: lights.Array.data[7].light
+      value: 
+      objectReference: {fileID: 1186711129}
+    - target: {fileID: 7544897107852993511, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
+      propertyPath: lights.Array.data[7].flashIntensity
+      value: 100000
+      objectReference: {fileID: 0}
     - target: {fileID: 8030081516313316202, guid: 58e2b21376517254c9db2171261ef4eb, type: 3}
       propertyPath: radius
       value: 0.7
@@ -5604,3 +5725,4 @@ SceneRoots:
   - {fileID: 857921718}
   - {fileID: 464506678}
   - {fileID: 1186711130}
+  - {fileID: 530321837}

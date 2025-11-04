@@ -2,102 +2,47 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-#if ENABLE_INPUT_SYSTEM
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.Controls;
-#endif
-
-public class LoreSceneFade : MonoBehaviour
+[RequireComponent(typeof(CanvasGroup))]
+public class LoreSceneController : MonoBehaviour
 {
-    [Header("Timings")]
-    public float fadeDuration = 0.8f;   // длительность FadeIn/FadeOut
-    public float beforeFadeOutDelay = 1f; // задержка перед FadeOut после нажати€
+    public CanvasGroup fade;
+    public float fadeIn = 0.8f;
+    public float fadeOut = 0.8f;
 
-    CanvasGroup cg;
-    bool isTransition;
+    bool requested;
 
     void Awake()
     {
-        cg = GetComponent<CanvasGroup>();
-        cg.alpha = 1f;                 // начинаем с чЄрного
-        cg.blocksRaycasts = true;      // блокируем клики на старте
+        if (!fade) fade = GetComponent<CanvasGroup>();
+        if (fade) { fade.alpha = 1f; fade.blocksRaycasts = true; }
     }
 
-    void Start()
+    IEnumerator Start()
     {
-        // Fade In
-        StartCoroutine(Fade(1f, 0f, fadeDuration, () =>
-        {
-            cg.blocksRaycasts = false; // разблокируем UI после по€влени€
-        }));
-    }
+        // ћузыка: оставить ту же, что пришла с Wave_N
+        MusicDirector.Instance?.AdoptForActiveScene();
 
-    void Update()
-    {
-        if (isTransition) return;
-        if (AnyPressThisFrame()) NextScene(); // реакци€ на любую кнопку/клик/тач/геймпад
-    }
+        yield return Fade(1f, 0f, fadeIn);
+        if (fade) fade.blocksRaycasts = false;
 
-    public void NextScene()
-    {
-        if (isTransition) return;
-        isTransition = true;
-        StartCoroutine(GoNextRoutine());
-    }
+        // ждЄм, пока Dialog вызовет RequestAdvance()
+        yield return new WaitUntil(() => requested);
 
-    IEnumerator GoNextRoutine()
-    {
-        // 1) подождать секунду (настраиваетс€ через beforeFadeOutDelay)
-        if (beforeFadeOutDelay > 0f)
-            yield return new WaitForSeconds(beforeFadeOutDelay);
+        if (fade) fade.blocksRaycasts = true;
+        yield return Fade(0f, 1f, fadeOut);
 
-        // 2) FadeOut: 0 -> 1
-        cg.blocksRaycasts = true; // блокируем ввод на врем€ затемнени€
-        yield return Fade(0f, 1f, fadeDuration);
-
-        // 3) загрузка следующей сцены по индексу
         int next = SceneManager.GetActiveScene().buildIndex + 1;
         if (next < SceneManager.sceneCountInBuildSettings)
             SceneManager.LoadScene(next);
-        else
-            Debug.Log("ѕоследн€€ сцена Ч нет следующей.");
     }
 
-    IEnumerator Fade(float from, float to, float duration, System.Action onDone = null)
+    public void RequestAdvance() => requested = true;
+
+    IEnumerator Fade(float from, float to, float duration)
     {
-        float t = 0f;
-        cg.alpha = from;
-        while (t < duration)
-        {
-            t += Time.deltaTime;
-            cg.alpha = Mathf.Lerp(from, to, t / duration);
-            yield return null;
-        }
-        cg.alpha = to;
-        onDone?.Invoke();
-    }
-
-    bool AnyPressThisFrame()
-    {
-#if ENABLE_INPUT_SYSTEM
-        if (Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame) return true;
-
-        if (Mouse.current != null &&
-           (Mouse.current.leftButton.wasPressedThisFrame ||
-            Mouse.current.rightButton.wasPressedThisFrame ||
-            Mouse.current.middleButton.wasPressedThisFrame)) return true;
-
-        if (Touchscreen.current != null &&
-            Touchscreen.current.primaryTouch.press.wasPressedThisFrame) return true;
-
-        if (Gamepad.current != null)
-        {
-            foreach (var c in Gamepad.current.allControls)
-                if (c is ButtonControl b && b.wasPressedThisFrame) return true;
-        }
-        return false;
-#else
-        return Input.anyKeyDown || Input.GetMouseButtonDown(0) || Input.touchCount > 0;
-#endif
+        if (!fade || duration <= 0f) { if (fade) fade.alpha = to; yield break; }
+        float t = 0f; fade.alpha = from;
+        while (t < duration) { t += Time.deltaTime; fade.alpha = Mathf.Lerp(from, to, t / duration); yield return null; }
+        fade.alpha = to;
     }
 }

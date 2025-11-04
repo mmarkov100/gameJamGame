@@ -5,6 +5,10 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyAI : MonoBehaviour
 {
+    // Глобальная пауза ИИ (старт фейда и т.п.)
+    public static bool GlobalPaused = false;
+    public bool IsDead => state == State.Dead;
+
     public enum State { Waiting, Staging, Approaching, Attacking, Stunned, Dead }
 
     [Header("Основное")]
@@ -122,6 +126,7 @@ public class EnemyAI : MonoBehaviour
 
     void Update()
     {
+
         if (state == State.Dead || player == null) return;
 
         // обновляем параметр Move для Locomotion
@@ -129,6 +134,9 @@ public class EnemyAI : MonoBehaviour
 
         if (state == State.Stunned)
         {
+            if (GlobalPaused) { if (agent) agent.isStopped = true; return; }
+
+            if (state == State.Dead || player == null) return;
             agent.isStopped = true;
             if (Time.time >= stunUntil) SetState(State.Waiting);
             return;
@@ -150,6 +158,12 @@ public class EnemyAI : MonoBehaviour
             case State.Approaching: HandleApproaching(); break;
             case State.Attacking: Face(player.position); break; // сам каст в корутине
         }
+        if (GlobalPaused)
+        {
+            if (agent) agent.isStopped = true;
+            return;
+        }
+
     }
 
     // ---- движение → параметр Move ----
