@@ -32,6 +32,14 @@ public class EnemySpawner : MonoBehaviour
     public bool useNavMeshSample = true;
     public float navMeshSampleMaxDistance = 2f;
 
+    [Header("Слои")]
+    public LayerMask groundMask = -1;      // выстави тут свой Ground слой (например, только Ground)
+
+    [Header("NavMesh")]
+    public int agentTypeID = 0;            // тип агента из Bake (обычно 0 Humanoid)
+    public float samplePrimaryRadius = 3f; // сначала ищем ближайший навмеш в 3м
+    public float sampleFallbackRadius = 8f;// если не нашли — расширяем до 8м
+
     [Header("Поворот при спавне")]
     public Transform faceTarget;      // необязательно
     public bool faceAlongSegment = false;
@@ -134,19 +142,60 @@ public class EnemySpawner : MonoBehaviour
 
         foreach (var p in points)
         {
-            Vector3 spawnPos = p;
+            if (!TryFindSpawnPoint(p, out var finalPos))
+            {
+                // не нашли пригодную точку — пропустим, чтобы не плодить "летающих"
+                continue;
+            }
 
-            if (snapToGround)
-                spawnPos = SnapToGround(spawnPos, out _);
-
-            if (useNavMeshSample)
-                spawnPos = SnapToNavMesh(spawnPos);
-
-            SpawnEnemy(spawnPos);
+            SpawnEnemy(finalPos);
             _totalRespawned++;
             if (_totalRespawned >= totalRespawnLimit) break;
         }
     }
+
+    bool TryFindSpawnPoint(Vector3 approx, out Vector3 result)
+    {
+        // 1) Земля под точкой
+        Vector3 ground = approx;
+        bool haveGround = false;
+
+        if (snapToGround)
+        {
+            // Стартуем чуточку выше, чтобы точно пересечься с коллайдером пола
+            Vector3 rayStart = new Vector3(approx.x, raycastStartY, approx.z);
+            if (Physics.Raycast(rayStart, Vector3.down, out var rh, raycastDownDistance, groundMask, QueryTriggerInteraction.Ignore))
+            {
+                ground = rh.point;
+                haveGround = true;
+            }
+        }
+        else
+        {
+            haveGround = true; // используем approx как есть
+        }
+
+        // 2) Ближайший NavMesh рядом с "землёй"
+        Vector3 navBase = haveGround ? ground : approx;
+
+        if (NavMesh.SamplePosition(navBase, out var hit, samplePrimaryRadius, NavMesh.AllAreas) ||
+            NavMesh.SamplePosition(navBase, out hit, sampleFallbackRadius, NavMesh.AllAreas))
+        {
+            // малый подскок вверх, затем снова прижмём к земле, чтобы Y совпал с полом
+            Vector3 candidate = hit.position + Vector3.up * 0.05f;
+
+            // 3) Финально прижмём к земле (коротким лучом), чтобы исключить "парение"
+            if (Physics.Raycast(candidate + Vector3.up * 1f, Vector3.down, out var rh2, 3f, groundMask, QueryTriggerInteraction.Ignore))
+                candidate = rh2.point;
+
+            result = candidate;
+            return true;
+        }
+
+        result = default;
+        return false;
+    }
+
 
     Vector3 SnapToGround(Vector3 pos, out bool hit)
     {
@@ -184,7 +233,18 @@ public class EnemySpawner : MonoBehaviour
             if (d.sqrMagnitude > 0.001f)
                 go.transform.rotation = Quaternion.LookRotation(d, Vector3.up);
         }
+
+        // КЛЮЧЕВОЕ: заякорим NavMeshAgent на найденную позицию
+        if (go.TryGetComponent<NavMeshAgent>(out var agent))
+        {
+            // убедимся, что тип агента совпадает с Bake (не обязательно, но полезно)
+            agent.agentTypeID = agentTypeID;
+            agent.Warp(worldPos);
+            agent.nextPosition = worldPos;  // устраняет возможный "рывок" в первый кадр
+            agent.baseOffset = 0f;          // чтобы не висел над полом
+        }
     }
+
 
     [ContextMenu("Spawn Now")]
     void CtxSpawnNow() => SpawnImmediate(desiredOnScene);
