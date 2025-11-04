@@ -56,6 +56,39 @@ public class EnemyAI : MonoBehaviour
     public Animator anim;               // назначь в инспекторе или найдётся сам
     public float moveBlendDamp = 0.1f;  // сглаживание параметра Move
 
+    [Header("Аудио")]
+    public AudioSource sfxSource;
+    public AudioClip attackStartClip;
+    [Range(0f, 1f)] public float startVolume = 0.9f;
+    [Range(0f, 0.3f)] public float startPitchJitter = 0.05f;
+
+    // анти-спам: минимальный интервал между старт-звуками
+    public float minStartSfxInterval = 0.15f;
+    float _lastStartSfxTime;
+
+    void PlayAttackStartSfx()
+    {
+        if (!attackStartClip) return;
+        if (Time.time - _lastStartSfxTime < minStartSfxInterval) return;
+        _lastStartSfxTime = Time.time;
+
+        if (sfxSource)
+        {
+            float p0 = sfxSource.pitch;
+            if (startPitchJitter > 0f)
+                sfxSource.pitch = Mathf.Clamp(p0 + Random.Range(-startPitchJitter, startPitchJitter), 0.5f, 2f);
+
+            sfxSource.PlayOneShot(attackStartClip, startVolume);
+
+            if (startPitchJitter > 0f) sfxSource.pitch = p0;
+        }
+        else
+        {
+            AudioSource.PlayClipAtPoint(attackStartClip, transform.position, startVolume);
+        }
+    }
+
+
     void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -182,6 +215,8 @@ public class EnemyAI : MonoBehaviour
     // ====== Каст и удар ======
     IEnumerator AttackCastRoutine()
     {
+        PlayAttackStartSfx();
+
         isCasting = true;
         SetState(State.Attacking);
         agent.isStopped = true;
@@ -248,6 +283,10 @@ public class EnemyAI : MonoBehaviour
         }
     }
 
+    public void Anim_AttackStartSfx()
+    {
+        PlayAttackStartSfx();
+    }
 
     public void OnAttackAnimationEnd()
     {
