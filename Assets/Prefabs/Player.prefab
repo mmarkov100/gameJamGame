@@ -206,9 +206,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 13c8db77627b87846aa5798e6cee1598, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7544897107852993511}
-    - targetCorrespondingSourceObject: {fileID: 8454112312453244774, guid: 13c8db77627b87846aa5798e6cee1598, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3741097286195272449}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 13c8db77627b87846aa5798e6cee1598, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8062896755148202045}
@@ -404,8 +401,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParrySonarSwitcher
   parry: {fileID: -9098826624919656354}
-  roomLights: []
-  lightIntensity: 2.5
+  lights:
+  - light: {fileID: 517391535812291656, guid: dd8a9abec5e9acf4f804e86d13a7f5d3, type: 3}
+    flashIntensity: 10
+  - light: {fileID: 3440872674839583806, guid: 74336639286965d4dab637d938bc09df, type: 3}
+    flashIntensity: 10
+  - light: {fileID: 2917419590103740540, guid: d0e5d981c312fc94a8554a87dbaa27ca, type: 3}
+    flashIntensity: 10
+  - light: {fileID: 0}
+    flashIntensity: 10
+  - light: {fileID: 7440673219761002492, guid: de4ed1935b766374c8ae9849c358035e, type: 3}
+    flashIntensity: 10
+  - light: {fileID: 7964347883899282878, guid: af9f6cc502b9bf648bd6ff48f98494e1, type: 3}
+    flashIntensity: 10
+  - light: {fileID: 8079104964951433411, guid: 6a12cf846f1093049b10f6ee3e4f62ee, type: 3}
+    flashIntensity: 10
+  - light: {fileID: 2605460039482941544, guid: fead8546b42a71244916f8ab241ee995, type: 3}
+    flashIntensity: 100000
   parryLightTime: 2
   playerGlow: {fileID: 0}
   sfxSource: {fileID: 8062896755148202045}

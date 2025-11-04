@@ -23,8 +23,11 @@ public class Dialog : MonoBehaviour
     [Header("Typing Settings")]
     [TextArea] public string message;
     public float charsPerSecond = 40f;
-    public float startDelay = 1f;        // ⬅️ задержка перед началом печати
     public bool startOnEnable = true;
+
+    [Header("Delays")]
+    public float startDelay = 1f;   // задержка перед началом печати (для Fade In)
+    public float endDelay = 1f;     // задержка перед onAdvance (для Fade Out)
 
     [Header("Flow")]
     public UnityEvent onAdvance;
@@ -34,6 +37,7 @@ public class Dialog : MonoBehaviour
 
     string full;
     Coroutine routine;
+    bool advancing;                  // идёт задержка перед onAdvance
 
     void OnEnable()
     {
@@ -45,6 +49,7 @@ public class Dialog : MonoBehaviour
     {
         full = text ?? "";
         if (routine != null) StopCoroutine(routine);
+        advancing = false;
         routine = StartCoroutine(TypeRoutine());
     }
 
@@ -53,15 +58,16 @@ public class Dialog : MonoBehaviour
         phase = Phase.Typing;
         SetText("");
 
-        // ✅ задержка перед началом показа текста
-        yield return new WaitForSeconds(startDelay);
+        // задержка перед началом печати
+        if (startDelay > 0f)
+            yield return new WaitForSeconds(startDelay);
 
         float shown = 0f;
         int lastLen = 0;
 
         while (lastLen < full.Length)
         {
-            // skip printing
+            // Нажатие во время печати -> мгновенно показать весь текст, НО НЕ переходить дальше
             if (AnyPressThisFrame())
             {
                 SetText(full);
@@ -92,15 +98,27 @@ public class Dialog : MonoBehaviour
         switch (phase)
         {
             case Phase.Typing:
+                // первое нажатие — досветить текст до конца
                 SetText(full);
                 phase = Phase.Shown;
                 break;
 
             case Phase.Shown:
-                onAdvance?.Invoke();
-                phase = Phase.Idle;
+                // второе нажатие — ждём endDelay, потом onAdvance
+                if (!advancing)
+                    StartCoroutine(AdvanceAfterDelay());
                 break;
         }
+    }
+
+    IEnumerator AdvanceAfterDelay()
+    {
+        advancing = true;
+        if (endDelay > 0f)
+            yield return new WaitForSeconds(endDelay);
+        onAdvance?.Invoke();
+        phase = Phase.Idle;
+        advancing = false;
     }
 
     bool AnyPressThisFrame()
