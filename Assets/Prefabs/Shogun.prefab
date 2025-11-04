@@ -263,6 +263,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e0218551aebc4bc439f46a202ca86efb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6201023559829315020}
+    - targetCorrespondingSourceObject: {fileID: 242839425468701356, guid: e0218551aebc4bc439f46a202ca86efb, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1583614384402446206}
   m_SourcePrefab: {fileID: 100100000, guid: e0218551aebc4bc439f46a202ca86efb, type: 3}
 --- !u!4 &478046099223766880 stripped
 Transform:
@@ -454,6 +457,28 @@ MonoBehaviour:
   attackSfx_Phase1: {fileID: 0}
   attackSfx_Phase2: {fileID: 0}
   invincibleInPhase1: 1
+--- !u!1 &4516653096278662989 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 242839425468701356, guid: e0218551aebc4bc439f46a202ca86efb, type: 3}
+  m_PrefabInstance: {fileID: 4463310378182247905}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1583614384402446206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4516653096278662989}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddc745dc58afea34a90a86141b38f58d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySonarResponder
+  glowColor: {r: 0.4, g: 0.8, b: 1, a: 1}
+  glowIntensity: 1.6
+  glowDuration: 1
+  triggerTolerance: 0.9
+  includeChildren: 1
 --- !u!4 &6422617551226171938 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -1958672735507286077, guid: e0218551aebc4bc439f46a202ca86efb, type: 3}
