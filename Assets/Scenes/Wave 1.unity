@@ -1481,7 +1481,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &464506676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1523,7 +1523,7 @@ Light:
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Intensity: 100
-  m_Range: 10
+  m_Range: 1000
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
@@ -1585,7 +1585,7 @@ Transform:
   m_GameObject: {fileID: 464506675}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.12639, y: 5.871, z: -8.7882}
+  m_LocalPosition: {x: 2.12639, y: 10.4, z: -8.7882}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2752,15 +2752,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e3466b29e512da48ab898668ef0288e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SonarController
-  origin: {fileID: 869466949}
+  player: {fileID: 0}
   waveSpeed: 8
-  waveInterval: 1.2
   waveWidth: 0.5
-  maxDistance: 100
+  waveInterval: 1.2
+  tailFade: 0
+  sonarColor: {r: 1, g: 1, b: 1, a: 1}
+  sonarIntensity: 1.2
+  worldDarkness: 0
+  autoStart: 1
   paused: 0
-  autoFindPlayer: 1
-  drawGizmos: 1
-  gizmoColor: {r: 0.2, g: 0.6, b: 1, a: 0.6}
 --- !u!4 &770794927
 Transform:
   m_ObjectHideFlags: 0
