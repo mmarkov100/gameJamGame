@@ -262,6 +262,10 @@ PrefabInstance:
       propertyPath: m_Speed
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 5548934542560501750, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6251774817717813424, guid: d1ddffeae7ca6a247b57e80198e988d1, type: 3}
       propertyPath: anim
       value: 
@@ -404,10 +408,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -2238375006719270545, guid: e0218551aebc4bc439f46a202ca86efb, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7865231394805125692}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e0218551aebc4bc439f46a202ca86efb, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4583505830061181393}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e0218551aebc4bc439f46a202ca86efb, type: 3}
 --- !u!4 &2257018048968944210 stripped
 Transform:
@@ -419,23 +420,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e0218551aebc4bc439f46a202ca86efb, type: 3}
   m_PrefabInstance: {fileID: 2594082962132699347}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &2936735514815706498 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e0218551aebc4bc439f46a202ca86efb, type: 3}
-  m_PrefabInstance: {fileID: 2594082962132699347}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &4583505830061181393
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2936735514815706498}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 705e4665168e5164d8bae4792a5f3230, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyAnimEventsRelay
 --- !u!4 &4670634356703264528 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -1958672735507286077, guid: e0218551aebc4bc439f46a202ca86efb, type: 3}
