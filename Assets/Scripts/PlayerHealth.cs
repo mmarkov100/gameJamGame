@@ -26,9 +26,6 @@ public class PlayerHealth : MonoBehaviour
 
         hp -= amount;
 
-        // FX урона
-        HitFx.FlashRenderers(gameObject, new Color(1f, 0.2f, 0.2f), 0.06f);
-
         if (hp <= 0)
         {
             if (TryGetComponent<Rigidbody>(out var rb))

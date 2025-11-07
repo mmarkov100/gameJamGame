@@ -641,7 +641,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 2db6bcf7e6416ba4cb0265b7f8c1de32, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -746,7 +746,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FadeControllerLogo
   fade: {fileID: 1664702274}
   logoSound: {fileID: 2002834365}
-  soundDelay: 0.5
+  soundDelay: 1
   fadeInTime: 1
   holdTime: 1.5
   fadeOutTime: 1
@@ -1113,5 +1113,5 @@ SceneRoots:
   - {fileID: 1342033867}
   - {fileID: 1207356836}
   - {fileID: 2021924459}
-  - {fileID: 1942328162}
   - {fileID: 2007946211}
+  - {fileID: 1942328162}

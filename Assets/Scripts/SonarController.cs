@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+п»їusing System.Collections.Generic;
 using UnityEngine;
 
 [DefaultExecutionOrder(-300)]
@@ -6,25 +6,25 @@ public class SonarController : MonoBehaviour
 {
     public static SonarController Instance { get; private set; }
 
-    [Header("Ссылки")]
-    public Transform player;             // центр пинга (обычно ГГ)
+    [Header("РЎСЃС‹Р»РєРё")]
+    public Transform player;             // С†РµРЅС‚СЂ РїРёРЅРіР° (РѕР±С‹С‡РЅРѕ Р“Р“)
 
-    [Header("Параметры волн")]
-    public float waveSpeed = 8f;         // м/с — как быстро растёт радиус
-    public float waveWidth = 1.8f;       // толщина «кольца» (м)
-    public float waveInterval = 1.2f;    // период запуска волн (с)
-    public float tailFade = 0.0f;        // «послесвечение» позади фронта (0 = нет)
+    [Header("РџР°СЂР°РјРµС‚СЂС‹ РІРѕР»РЅ")]
+    public float waveSpeed = 8f;         // Рј/СЃ вЂ” РєР°Рє Р±С‹СЃС‚СЂРѕ СЂР°СЃС‚С‘С‚ СЂР°РґРёСѓСЃ
+    public float waveWidth = 1.8f;       // С‚РѕР»С‰РёРЅР° В«РєРѕР»СЊС†Р°В» (Рј)
+    public float waveInterval = 1.2f;    // РїРµСЂРёРѕРґ Р·Р°РїСѓСЃРєР° РІРѕР»РЅ (СЃ)
+    public float tailFade = 0.0f;        // В«РїРѕСЃР»РµСЃРІРµС‡РµРЅРёРµВ» РїРѕР·Р°РґРё С„СЂРѕРЅС‚Р° (0 = РЅРµС‚)
 
-    [Header("Визуал кольца")]
+    [Header("Р’РёР·СѓР°Р» РєРѕР»СЊС†Р°")]
     public Color sonarColor = new Color(1, 1, 1, 1);
     [Range(0f, 4f)] public float sonarIntensity = 1.2f;
-    public float worldDarkness = 0.0f;   // базовая видимость сцены в полной темноте (0-1)
+    public float worldDarkness = 0.0f;   // Р±Р°Р·РѕРІР°СЏ РІРёРґРёРјРѕСЃС‚СЊ СЃС†РµРЅС‹ РІ РїРѕР»РЅРѕР№ С‚РµРјРЅРѕС‚Рµ (0-1)
 
-    [Header("Управление")]
+    [Header("РЈРїСЂР°РІР»РµРЅРёРµ")]
     public bool autoStart = true;
     public bool paused = false;
 
-    // текущее состояние волны
+    // С‚РµРєСѓС‰РµРµ СЃРѕСЃС‚РѕСЏРЅРёРµ РІРѕР»РЅС‹
     public float CurrentRadius { get; private set; }
     public int WaveIndex { get; private set; }
 
@@ -48,7 +48,7 @@ public class SonarController : MonoBehaviour
     {
         if (!player) return;
 
-        // Запуск новой волны по интервалу
+        // Р—Р°РїСѓСЃРє РЅРѕРІРѕР№ РІРѕР»РЅС‹ РїРѕ РёРЅС‚РµСЂРІР°Р»Сѓ
         if (!paused && Time.time >= nextWaveTime)
         {
             WaveIndex++;
@@ -56,11 +56,11 @@ public class SonarController : MonoBehaviour
             nextWaveTime = Time.time + waveInterval;
         }
 
-        // Обновляем радиус
+        // РћР±РЅРѕРІР»СЏРµРј СЂР°РґРёСѓСЃ
         if (!paused)
             CurrentRadius += waveSpeed * Time.deltaTime;
 
-        // Прокидываем параметры в шейдеры (глобально)
+        // РџСЂРѕРєРёРґС‹РІР°РµРј РїР°СЂР°РјРµС‚СЂС‹ РІ С€РµР№РґРµСЂС‹ (РіР»РѕР±Р°Р»СЊРЅРѕ)
         PushGlobals();
     }
 
@@ -79,7 +79,7 @@ public class SonarController : MonoBehaviour
         Shader.SetGlobalInt("_SonarWaveIndex", WaveIndex);
     }
 
-    // ——— API для других компонентов ———
+    // вЂ”вЂ”вЂ” API РґР»СЏ РґСЂСѓРіРёС… РєРѕРјРїРѕРЅРµРЅС‚РѕРІ вЂ”вЂ”вЂ”
 
     public bool IsFrontNearHorizontal(Vector3 worldPos, float toleranceMeters)
     {

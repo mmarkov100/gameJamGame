@@ -26,10 +26,6 @@ public class EnemyHealth : MonoBehaviour
 
         hp -= amount;
 
-        // визуализация
-        HitFx.FlashRenderers(gameObject, Color.white, 0.08f);
-        HitFx.HitSpark(hitPoint, Color.yellow);
-
         if (hp <= 0)
         {
             Die();

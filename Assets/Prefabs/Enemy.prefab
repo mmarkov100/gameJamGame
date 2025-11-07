@@ -1,36 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1821331363650159154
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1532265946847000681}
-  m_Layer: 0
-  m_Name: SocketKatana
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1532265946847000681
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1821331363650159154}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0.6606759, y: 0.4348319, z: -0.27494353, w: -0.54665786}
-  m_LocalPosition: {x: -0.00615, y: 0.00717, z: 0.00099}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8428152262977309228}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2516792245220702493
 GameObject:
   m_ObjectHideFlags: 0
@@ -45,10 +14,10 @@ GameObject:
   - component: {fileID: 6286446753597589143}
   - component: {fileID: 6467642668716667750}
   - component: {fileID: 4936260489950038582}
-  - component: {fileID: 4868808938866470452}
-  - component: {fileID: 6251774817717813424}
-  - component: {fileID: 5548934542560501750}
   - component: {fileID: 3347047990622118882}
+  - component: {fileID: 5548934542560501750}
+  - component: {fileID: 4497345162525938764}
+  - component: {fileID: 719940666280560007}
   m_Layer: 3
   m_Name: Enemy
   m_TagString: Enemy
@@ -200,73 +169,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &4868808938866470452
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2516792245220702493}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a15e6e94705ab6648bc95f4bae59c78c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
-  maxHP: 1
-  destroyOnDeath: 0
---- !u!114 &6251774817717813424
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2516792245220702493}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b199c77293122964c964299e7b60dcb3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
-  playerTag: Player
-  sightRadius: 2000
-  faceTurnSpeed: 720
-  attackRange: 0.7
-  attackCooldown: 3
-  attackCastTime: 0.42
-  damage: 1
-  frontDot: 0.25
-  damageWindow: 0.2
-  ringRadius: 5
-  ringRadiusJitter: 0.6
-  idleShuffleRadius: 0.5
-  idleShuffleInterval: 2.2
-  reengageDelay: 1.2
-  autoRequestEngage: 1
-  requestEngageEvery: {x: 1, y: 2}
-  anim: {fileID: 4705487535100526718}
-  moveBlendDamp: 0.1
-  sfxSource: {fileID: 3347047990622118882}
-  attackStartClip: {fileID: 8300000, guid: 3ddb599e328ccbc45942df8e69b81cac, type: 3}
-  startSfxDelay: 0.2
-  startVolume: 0.5
-  startPitchJitter: 0.05
-  minStartSfxInterval: 0.15
---- !u!114 &5548934542560501750
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2516792245220702493}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddc745dc58afea34a90a86141b38f58d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemySonarResponder
-  glowColor: {r: 0.4, g: 0.8, b: 1, a: 1}
-  glowIntensity: 1.4
-  glowDuration: 1
-  triggerTolerance: 1
-  includeChildren: 1
 --- !u!82 &3347047990622118882
 AudioSource:
   m_ObjectHideFlags: 0
@@ -364,6 +266,73 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &5548934542560501750
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2516792245220702493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ddc745dc58afea34a90a86141b38f58d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySonarResponder
+  glowColor: {r: 0.4, g: 0.8, b: 1, a: 1}
+  glowIntensity: 1.4
+  glowDuration: 1
+  triggerTolerance: 1
+  includeChildren: 1
+--- !u!114 &4497345162525938764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2516792245220702493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b199c77293122964c964299e7b60dcb3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
+  playerTag: Player
+  sightRadius: 200
+  faceTurnSpeed: 720
+  attackRange: 1.2
+  attackCooldown: 3
+  attackCastTime: 0.5
+  damage: 1
+  frontDot: 0.3
+  damageWindow: 0.2
+  ringRadius: 5
+  ringRadiusJitter: 0.6
+  idleShuffleRadius: 0.5
+  idleShuffleInterval: 2.2
+  reengageDelay: 1.2
+  autoRequestEngage: 1
+  requestEngageEvery: {x: 1, y: 2}
+  anim: {fileID: 0}
+  moveBlendDamp: 0.1
+  sfxSource: {fileID: 0}
+  attackStartClip: {fileID: 8300000, guid: 3ddb599e328ccbc45942df8e69b81cac, type: 3}
+  startSfxDelay: 0.15
+  startVolume: 0.9
+  startPitchJitter: 0.05
+  minStartSfxInterval: 0.15
+--- !u!114 &719940666280560007
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2516792245220702493}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a15e6e94705ab6648bc95f4bae59c78c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
+  maxHP: 1
+  destroyOnDeath: 1
 --- !u!1001 &1164086299933720047
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -445,14 +414,11 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: -1958672735507286077, guid: 0a35367d04554af42a688c54909bf62a, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1532265946847000681}
-    - targetCorrespondingSourceObject: {fileID: -1958672735507286077, guid: 0a35367d04554af42a688c54909bf62a, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 5011155052170838560}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0a35367d04554af42a688c54909bf62a, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1360934717560151181}
+      addedObject: {fileID: 587547055112311549}
   m_SourcePrefab: {fileID: 100100000, guid: 0a35367d04554af42a688c54909bf62a, type: 3}
 --- !u!4 &1706040926525184516 stripped
 Transform:
@@ -464,23 +430,18 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 0a35367d04554af42a688c54909bf62a, type: 3}
   m_PrefabInstance: {fileID: 1164086299933720047}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1360934717560151181
+--- !u!114 &587547055112311549
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2082566847789498558}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 705e4665168e5164d8bae4792a5f3230, type: 3}
+  m_Script: {fileID: 11500000, guid: 8f8b7e86fd0745044995da3891cbfdad, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyAnimEventsRelay
---- !u!95 &4705487535100526718 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 0a35367d04554af42a688c54909bf62a, type: 3}
-  m_PrefabInstance: {fileID: 1164086299933720047}
-  m_PrefabAsset: {fileID: 0}
+  m_EditorClassIdentifier: '::'
 --- !u!4 &8428152262977309228 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -1958672735507286077, guid: 0a35367d04554af42a688c54909bf62a, type: 3}
