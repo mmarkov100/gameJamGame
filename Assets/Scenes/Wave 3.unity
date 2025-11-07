@@ -2442,16 +2442,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e3466b29e512da48ab898668ef0288e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SonarController
-  player: {fileID: 869466949}
+  origin: {fileID: 869466949}
+  autoFindPlayer: 1
   waveSpeed: 8
-  waveWidth: 0.5
   waveInterval: 1.2
-  tailFade: -1
-  sonarColor: {r: 1, g: 1, b: 1, a: 1}
-  sonarIntensity: 1.99
-  worldDarkness: 0
-  autoStart: 1
+  waveWidth: 0.5
+  maxDistance: 100
   paused: 0
+  drawGizmos: 1
+  gizmoColor: {r: 0.2, g: 0.6, b: 1, a: 0.6}
 --- !u!4 &770794927
 Transform:
   m_ObjectHideFlags: 0

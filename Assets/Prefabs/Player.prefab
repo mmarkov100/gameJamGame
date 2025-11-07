@@ -176,7 +176,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -5829051595182569337, guid: 13c8db77627b87846aa5798e6cee1598, type: 3}
       propertyPath: m_Materials.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: -5829051595182569337, guid: 13c8db77627b87846aa5798e6cee1598, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -185,7 +185,7 @@ PrefabInstance:
     - target: {fileID: -5829051595182569337, guid: 13c8db77627b87846aa5798e6cee1598, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
-      objectReference: {fileID: 2100000, guid: b2a3219509ef34a42b88c89672e87b21, type: 2}
+      objectReference: {fileID: 2100000, guid: 1d2d431cc024ed04dbfc9943bcb0ada8, type: 2}
     - target: {fileID: -5512944345145251879, guid: 13c8db77627b87846aa5798e6cee1598, type: 3}
       propertyPath: m_Layer
       value: 8
@@ -406,9 +406,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f06cd678787574498a027083186bac0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerAlwaysGlow
-  glowColor: {r: 0.990566, g: 0.0046724924, b: 0.0046724924, a: 1}
-  glowIntensity: 1.2
-  includeChildren: 1
+  redGlow: {r: 1, g: 0.1, b: 0.1, a: 1}
+  glowMultiplier: 1.5
+  emissionColorProperty: _EmissionColor
 --- !u!95 &3138378340525744362 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 5866666021909216657, guid: 13c8db77627b87846aa5798e6cee1598, type: 3}
@@ -551,19 +551,7 @@ MonoBehaviour:
   anim: {fileID: 0}
   OnParrySuccess:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 7544897107852993511}
-        m_TargetAssemblyTypeName: ParrySonarSwitcher, Assembly-CSharp
-        m_MethodName: OnParrySuccessHandler
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &7544897107852993511
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -577,29 +565,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParrySonarSwitcher
   parry: {fileID: -9098826624919656354}
-  lights:
-  - light: {fileID: 517391535812291656, guid: dd8a9abec5e9acf4f804e86d13a7f5d3, type: 3}
-    flashIntensity: 10
-  - light: {fileID: 3440872674839583806, guid: 74336639286965d4dab637d938bc09df, type: 3}
-    flashIntensity: 10
-  - light: {fileID: 2917419590103740540, guid: d0e5d981c312fc94a8554a87dbaa27ca, type: 3}
-    flashIntensity: 10
-  - light: {fileID: 0}
-    flashIntensity: 10
-  - light: {fileID: 7440673219761002492, guid: de4ed1935b766374c8ae9849c358035e, type: 3}
-    flashIntensity: 10
-  - light: {fileID: 7964347883899282878, guid: af9f6cc502b9bf648bd6ff48f98494e1, type: 3}
-    flashIntensity: 10
-  - light: {fileID: 8079104964951433411, guid: 6a12cf846f1093049b10f6ee3e4f62ee, type: 3}
-    flashIntensity: 10
-  - light: {fileID: 2605460039482941544, guid: fead8546b42a71244916f8ab241ee995, type: 3}
-    flashIntensity: 100000
-  parryLightTime: 2
-  playerGlow: {fileID: 0}
-  sfxSource: {fileID: 8062896755148202045}
-  parryClip: {fileID: 8300000, guid: 8bb3f7921d1e6824d92ccb1ff169797f, type: 3}
-  sfxVolume: 0.923
-  pitchJitter: 0.05
+  enableOnParry: []
+  lightPulseDuration: 0.4
+  fadeFraction: 0
+  lights3D: []
+  sonarController: {fileID: 0}
+  spawnExtraSonarPulse: 1
+  pulseWidth: 1.2
+  pulseSpeed: 42
+  pulseMaxRadius: 28
+  pulseColor: {r: 1, g: 0.5, b: 0.2, a: 1}
+  pulseIntensity: 1.8
+  pulseTail: 2
 --- !u!82 &8062896755148202045
 AudioSource:
   m_ObjectHideFlags: 0

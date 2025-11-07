@@ -2,166 +2,152 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// Вспышка врага при прохождении волны сонара (через Emission).
-/// - Работает с любыми материалами, у которых есть _EmissionColor (URP/Built-in).
-/// - Не требует рендера на самом объекте: может висеть на корне, соберёт детей.
-/// - Глобально подавляется на время парри (SetSuppressed).
-/// - После перезагрузки сцены статика сбрасывается (фикс неработающих вспышек).
-/// </summary>
-[DisallowMultipleComponent]
 public class EnemySonarResponder : MonoBehaviour
 {
-    // ===== Глобальное состояние (реестр + подавление) =====
-    static readonly List<EnemySonarResponder> _registry = new();
-    static bool _suppressed = false;
-
-    /// <summary>Включить/выключить глобальное подавление свечения (напр., при парри).</summary>
-    public static void SetSuppressed(bool value)
-    {
-        _suppressed = value;
-        if (value)
-        {
-            // мгновенно погасить всех текущих
-            for (int i = 0; i < _registry.Count; i++)
-                if (_registry[i] != null) _registry[i].StopGlowNow();
-        }
-    }
-
-    /// <summary>Сброс статики после загрузки любой сцены (важно при Reload).</summary>
-    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-    static void ResetStaticsOnSceneLoad()
-    {
-        _suppressed = false;
-        _registry.Clear();
-    }
-
-    // ===== Параметры подсветки =====
-    [Header("Подсветка при касании волной")]
-    public Color glowColor = new(0.40f, 0.80f, 1.00f, 1f);
-    [Tooltip("Множитель яркости эмиссии")]
-    public float glowIntensity = 1.6f;
-    [Tooltip("Сколько секунд горит после касания")]
-    public float glowDuration = 1.0f;
-    [Tooltip("Добавочная толщина фронта волны (меньше пропусков)")]
-    public float triggerTolerance = 0.9f;
-
-    [Header("Охват рендереров")]
-    [Tooltip("Собирать все Renderer в детях (рекомендуется для корневого объекта врага)")]
+    [Header("Какие рендереры подсвечивать")]
     public bool includeChildren = true;
+    public List<Renderer> overrideRenderers = new();
 
-    // ===== Внутреннее =====
-    Renderer[] rends;
-    MaterialPropertyBlock mpb;
-    Coroutine glowCo;
-    int lastTriggeredWave = -1;
+    [Header("Overlay (Sonar/UnlitGlow)")]
+    public int overlayMaterialIndex = 1;
+    public bool fallbackToIndex0IfMissing = true;   // ? добавлено
+    public Color glowColor = new(0.4f, 0.8f, 1f, 1f);
+    public float glowIntensity = 2.5f;
+    public float glowDuration = 1.0f;
+
+    [Header("Имена свойств")]
+    public string glowColorProp = "_GlowColor";
+    public string glowIntensityProp = "_GlowIntensity";
+
+    readonly List<Renderer> _renderers = new();
+    readonly Dictionary<Renderer, MaterialPropertyBlock> _mpb = new();
+
+    Coroutine _fadeCo;
+    int _lastWaveIdProcessed = -1;
+    bool _suppressed = false;
 
     void OnEnable()
     {
-        if (!_registry.Contains(this)) _registry.Add(this);
+        CollectRenderers();
+        EnsureBlocks();
+        SetOverlayIntensity(0f);
+
+        SonarController.OnWaveFrontAdvanced += OnWaveFront;
+        SonarController.OnSonarSuppressedChanged += OnSuppressedChanged;
     }
 
     void OnDisable()
     {
-        _registry.Remove(this);
-        StopGlowNow(); // на всякий случай погасим при выключении
+        SonarController.OnWaveFrontAdvanced -= OnWaveFront;
+        SonarController.OnSonarSuppressedChanged -= OnSuppressedChanged;
+        SetOverlayIntensity(0f);
     }
 
-    void Awake()
+    void OnSuppressedChanged(bool v)
     {
-        rends = includeChildren
-            ? GetComponentsInChildren<Renderer>(true)
-            : GetComponents<Renderer>();
-
-        mpb = new MaterialPropertyBlock();
-
-        // Гарантируем, что эмиссия может работать на инстансах материалов
-        foreach (var r in rends)
+        _suppressed = v;
+        if (v)
         {
-            if (!r) continue;
-            foreach (var m in r.materials) // именно materials (инстансы), не sharedMaterials
-            {
-                if (!m) continue;
-                m.EnableKeyword("_EMISSION");
-                if (m.HasProperty("_EmissionColor"))
-                    m.SetColor("_EmissionColor", Color.black);
-            }
+            if (_fadeCo != null) StopCoroutine(_fadeCo);
+            SetOverlayIntensity(0f);
+        }
+    }
+
+    void CollectRenderers()
+    {
+        _renderers.Clear();
+
+        if (overrideRenderers != null && overrideRenderers.Count > 0)
+        {
+            foreach (var r in overrideRenderers) if (r) _renderers.Add(r);
+            return;
         }
 
-        // стартовое состояние — не светимся
-        SetEmission(Color.black);
+        if (includeChildren) GetComponentsInChildren(true, _renderers);
+        else { var r = GetComponent<Renderer>(); if (r) _renderers.Add(r); }
     }
 
-    void Update()
+    void EnsureBlocks()
+    {
+        _mpb.Clear();
+        foreach (var r in _renderers)
+        {
+            if (!r) continue;
+
+            // защита по индексу
+            int idx = overlayMaterialIndex;
+            var mats = r.sharedMaterials;              // ? без инстанцирования в редакторе
+            if (idx < 0 || idx >= mats.Length)
+            {
+                if (fallbackToIndex0IfMissing && mats.Length > 0) idx = 0;
+                else continue; // пропустить рендерер вообще
+            }
+
+            var b = new MaterialPropertyBlock();
+            r.GetPropertyBlock(b, idx);
+            _mpb[r] = b;
+        }
+    }
+
+    void OnWaveFront(SonarController.WaveSample s)
     {
         if (_suppressed) return;
+        if (s.waveId == _lastWaveIdProcessed) return;
 
-        var sonar = SonarController.Instance;
-        if (sonar == null || sonar.paused) return;
+        // найдём любой валидный рендерер как репрезентативную точку
+        Renderer refR = null;
+        for (int i = 0; i < _renderers.Count; i++)
+            if (_renderers[i]) { refR = _renderers[i]; break; }
+        if (!refR) return;
 
-        // защитимся от повторного срабатывания на ту же волну
-        if (lastTriggeredWave == sonar.WaveIndex) return;
+        float dist = Vector3.Distance(refR.bounds.center, s.origin);
+        float half = s.width * 0.5f;
+        float minR = Mathf.Min(s.radiusPrev, s.radiusNow) - half;
+        float maxR = Mathf.Max(s.radiusPrev, s.radiusNow) + half;
 
-        // проверка близости фронта (по XZ)
-        if (sonar.IsFrontNearHorizontal(transform.position, sonar.waveWidth * 0.5f + triggerTolerance))
+        if (dist >= minR && dist <= maxR)
         {
-            lastTriggeredWave = sonar.WaveIndex;
-            if (glowCo != null) StopCoroutine(glowCo);
-            glowCo = StartCoroutine(GlowCo());
+            _lastWaveIdProcessed = s.waveId;
+            TriggerGlowOnce();
         }
     }
 
-    IEnumerator GlowCo()
+    void TriggerGlowOnce()
     {
-        float t = 0f;
-
-        // старт — зажечь максимально
-        SetEmission(glowColor * glowIntensity);
-
-        while (t < glowDuration && !_suppressed)
-        {
-            t += Time.deltaTime;
-            // плавное затухание
-            float k = 1f - Mathf.SmoothStep(0f, 1f, t / glowDuration);
-            SetEmission(glowColor * (glowIntensity * Mathf.Max(0.0001f, k)));
-            yield return null;
-        }
-
-        SetEmission(Color.black);
-        glowCo = null;
+        if (_fadeCo != null) StopCoroutine(_fadeCo);
+        SetOverlayIntensity(glowIntensity);
+        _fadeCo = StartCoroutine(FadeOutAfter(glowDuration));
     }
 
-    /// <summary>Мгновенно погасить подсветку (используется при парри и выключении).</summary>
-    public void StopGlowNow()
+    IEnumerator FadeOutAfter(float seconds)
     {
-        if (glowCo != null) { StopCoroutine(glowCo); glowCo = null; }
-        SetEmission(Color.black);
-
-        // чтобы в кадр перезагрузки/подавления не перетриггериться текущей волной
-        var sonar = SonarController.Instance;
-        if (sonar) lastTriggeredWave = sonar.WaveIndex;
+        yield return new WaitForSeconds(seconds);
+        SetOverlayIntensity(0f);
+        _fadeCo = null;
     }
 
-    // ===== Работа с эмиссией через MPB + ключ _EMISSION =====
-    void SetEmission(Color emission)
+    void SetOverlayIntensity(float intensity)
     {
-        foreach (var r in rends)
+        foreach (var r in _renderers)
         {
             if (!r) continue;
 
-            r.GetPropertyBlock(mpb);
-            mpb.SetColor("_EmissionColor", emission);
-            r.SetPropertyBlock(mpb);
-
-            // Включаем/выключаем ключ на инстансах материалов,
-            // чтобы даже не-HDRP/URP шейдеры корректно реагировали.
-            bool on = emission.maxColorComponent > 0f;
-            foreach (var m in r.materials)
+            int idx = overlayMaterialIndex;
+            var mats = r.sharedMaterials;      // ? не инстанцирует материалы
+            if (idx < 0 || idx >= mats.Length)
             {
-                if (!m) continue;
-                if (on) m.EnableKeyword("_EMISSION");
-                else m.DisableKeyword("_EMISSION");
+                if (fallbackToIndex0IfMissing && mats.Length > 0) idx = 0;
+                else continue;
             }
+
+            if (!_mpb.TryGetValue(r, out var b) || b == null) b = new MaterialPropertyBlock();
+
+            r.GetPropertyBlock(b, idx);
+            b.SetColor(glowColorProp, glowColor);
+            b.SetFloat(glowIntensityProp, Mathf.Max(0f, intensity));
+            r.SetPropertyBlock(b, idx);
+
+            _mpb[r] = b;
         }
     }
 }

@@ -106,6 +106,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 5c521d799dd796e4e983d337ff9ff436, type: 2}
+  - {fileID: 2100000, guid: d2acf0e8350a2da4a9856bc37ecc0cea, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -262,11 +263,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ddc745dc58afea34a90a86141b38f58d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemySonarResponder
-  glowColor: {r: 0.4, g: 0.8, b: 1, a: 1}
-  glowIntensity: 1.4
-  glowDuration: 1
-  triggerTolerance: 1
   includeChildren: 1
+  overrideRenderers: []
+  overlayMaterialIndex: 1
+  glowColor: {r: 0.4, g: 0.8, b: 1, a: 1}
+  glowIntensity: 0
+  glowDuration: 1
+  glowColorProp: _GlowColor
+  glowIntensityProp: _GlowIntensity
 --- !u!82 &3347047990622118882
 AudioSource:
   m_ObjectHideFlags: 0

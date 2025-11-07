@@ -1398,7 +1398,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &464506676
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2461,13 +2461,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e3466b29e512da48ab898668ef0288e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SonarController
-  origin: {fileID: 0}
+  origin: {fileID: 869466949}
+  autoFindPlayer: 1
   waveSpeed: 8
   waveInterval: 1.2
   waveWidth: 0.5
   maxDistance: 100
   paused: 0
-  autoFindPlayer: 1
   drawGizmos: 1
   gizmoColor: {r: 0.2, g: 0.6, b: 1, a: 0.6}
 --- !u!4 &770794927

@@ -34,7 +34,11 @@ public class PlayerParry : MonoBehaviour
     //float parryActiveUntil = -1f;
     float parryReadyTime = 0f;           // когда способность снова доступна
 
-    void Awake() { if (!anim) anim = GetComponent<Animator>(); }
+    void Awake() 
+    {
+        if (!anim) anim = GetComponent<Animator>();
+        if (OnParrySuccess == null) OnParrySuccess = new UnityEvent(); // <— важно
+    }
     void Update()
     {
         bool parryPressed =
@@ -85,4 +89,5 @@ public class PlayerParry : MonoBehaviour
         OnParrySuccess?.Invoke();
         return true;
     }
+
 }
