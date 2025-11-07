@@ -1,36 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1821331363650159154
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1532265946847000681}
-  m_Layer: 0
-  m_Name: SocketKatana
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1532265946847000681
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1821331363650159154}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0.6606759, y: 0.4348319, z: -0.27494353, w: -0.54665786}
-  m_LocalPosition: {x: -0.00615, y: 0.00717, z: 0.00099}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8428152262977309228}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2516792245220702493
 GameObject:
   m_ObjectHideFlags: 0
@@ -345,7 +314,7 @@ MonoBehaviour:
   anim: {fileID: 0}
   moveBlendDamp: 0.1
   sfxSource: {fileID: 0}
-  attackStartClip: {fileID: 0}
+  attackStartClip: {fileID: 8300000, guid: 3ddb599e328ccbc45942df8e69b81cac, type: 3}
   startSfxDelay: 0.15
   startVolume: 0.9
   startPitchJitter: 0.05
@@ -445,17 +414,34 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: -1958672735507286077, guid: 0a35367d04554af42a688c54909bf62a, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1532265946847000681}
-    - targetCorrespondingSourceObject: {fileID: -1958672735507286077, guid: 0a35367d04554af42a688c54909bf62a, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 5011155052170838560}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 0a35367d04554af42a688c54909bf62a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 587547055112311549}
   m_SourcePrefab: {fileID: 100100000, guid: 0a35367d04554af42a688c54909bf62a, type: 3}
 --- !u!4 &1706040926525184516 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 0a35367d04554af42a688c54909bf62a, type: 3}
   m_PrefabInstance: {fileID: 1164086299933720047}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2082566847789498558 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 0a35367d04554af42a688c54909bf62a, type: 3}
+  m_PrefabInstance: {fileID: 1164086299933720047}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &587547055112311549
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2082566847789498558}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f8b7e86fd0745044995da3891cbfdad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!4 &8428152262977309228 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -1958672735507286077, guid: 0a35367d04554af42a688c54909bf62a, type: 3}
