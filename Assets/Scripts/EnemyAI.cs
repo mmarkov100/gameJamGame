@@ -37,7 +37,7 @@ public class EnemyAI : MonoBehaviour
 
     [Header("Интеграция")]
     public bool autoRequestEngage = true;
-    public Vector2 requestEngageEvery = new Vector2(1.0f, 2.0f);
+    public Vector2 requestEngageEvery = new(1.0f, 2.0f);
 
     // --- внутреннее ---
     public Transform Player => player;
@@ -303,12 +303,6 @@ public class EnemyAI : MonoBehaviour
         if (inRange && inFront && player.TryGetComponent<PlayerHealth>(out var hp))
         {
             hp.TakeDamage(damage);
-            //HitFx.HitSpark(player.position + Vector3.up * 0.3f, Color.red, 0.25f, 0.25f);
-        }
-        else
-        {
-            Vector3 ringPos = transform.position + Vector3.up * 0.01f + transform.forward * (attackRange * 0.7f);
-            //HitFx.ShowRing(ringPos, 0.25f, new Color(0.2f, 0.8f, 1f), 0.18f);
         }
     }
 

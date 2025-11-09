@@ -47,10 +47,10 @@ MonoBehaviour:
   player: {fileID: 0}
   waveSpeed: 12
   waveWidth: 3
-  waveInterval: 1
-  tailFade: -1000
+  waveInterval: 1.5
+  tailFade: 0
   sonarColor: {r: 1, g: 1, b: 1, a: 1}
-  sonarIntensity: 1.99
+  sonarIntensity: 1.5
   worldDarkness: 0
   autoStart: 1
   paused: 0

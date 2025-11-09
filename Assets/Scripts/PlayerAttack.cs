@@ -20,6 +20,8 @@ public class PlayerAttack : MonoBehaviour
     public AudioClip attackStartClip;
     [Range(0f, 1f)] public float attackVolume = 0.9f;
     [Range(0f, 0.3f)] public float attackPitchJitter = 0.05f;
+    [Range(10f, 180f)]
+    public float coneAngleDeg = 80f;
 
     void PlayAttackStartSfx()
     {
@@ -43,11 +45,6 @@ public class PlayerAttack : MonoBehaviour
         }
     }
 
-
-
-    [Range(10f, 180f)]
-    public float coneAngleDeg = 80f;
-
     float nextAttackTime;
     PlayerParry parry;
 
@@ -70,11 +67,8 @@ public class PlayerAttack : MonoBehaviour
         if (Time.time < nextAttackTime) return;
         nextAttackTime = Time.time + cooldown;
 
-        if (parry != null && parry.InRiposteWindow)
-            anim.SetTrigger("Riposte");
-        else
-            PlayAttackStartSfx();
-            anim.SetTrigger("Attack");
+        PlayAttackStartSfx();
+        anim.SetTrigger("Attack");
     }
     public void MeleeHit() => DoMeleeHit();
 
@@ -83,10 +77,6 @@ public class PlayerAttack : MonoBehaviour
         Vector3 origin = transform.position + Vector3.up * hitHeight;
         Vector3 a = origin;
         Vector3 b = origin + transform.forward * range;
-
-        // FX
-        Vector3 ringPos = transform.position + Vector3.up * 0.01f + transform.forward * (range * 0.7f);
-        //HitFx.ShowRing(ringPos, Mathf.Max(radius * 1.2f, 0.25f), new Color(0.2f, 0.8f, 1f), 0.18f);
 
         Collider[] hits = Physics.OverlapCapsule(a, b, radius, hittableMask, QueryTriggerInteraction.Ignore);
         float cosThreshold = Mathf.Cos(coneAngleDeg * 0.5f * Mathf.Deg2Rad);
@@ -124,7 +114,6 @@ public class PlayerAttack : MonoBehaviour
 
         if (bestEnemy != null)
         {
-            //HitFx.HitSpark(bestHitPoint, Color.yellow);
             bestEnemy.TakeDamage(damage, bestHitPoint, -transform.forward);
         }
     }

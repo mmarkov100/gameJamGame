@@ -15,9 +15,8 @@ GameObject:
   - component: {fileID: 6467642668716667750}
   - component: {fileID: 4936260489950038582}
   - component: {fileID: 3347047990622118882}
-  - component: {fileID: 5548934542560501750}
-  - component: {fileID: 4497345162525938764}
-  - component: {fileID: 719940666280560007}
+  - component: {fileID: 5809575668799094342}
+  - component: {fileID: 6808053372091989210}
   m_Layer: 3
   m_Name: Enemy
   m_TagString: Enemy
@@ -161,7 +160,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 720
-  m_StoppingDistance: 1
+  m_StoppingDistance: 0.7
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -266,24 +265,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &5548934542560501750
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2516792245220702493}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddc745dc58afea34a90a86141b38f58d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemySonarResponder
-  glowColor: {r: 0.4, g: 0.8, b: 1, a: 1}
-  glowIntensity: 1.4
-  glowDuration: 1
-  triggerTolerance: 1
-  includeChildren: 1
---- !u!114 &4497345162525938764
+--- !u!114 &5809575668799094342
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -296,7 +278,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
   playerTag: Player
-  sightRadius: 200
+  sightRadius: 2000
   faceTurnSpeed: 720
   attackRange: 1.2
   attackCooldown: 3
@@ -314,12 +296,12 @@ MonoBehaviour:
   anim: {fileID: 0}
   moveBlendDamp: 0.1
   sfxSource: {fileID: 0}
-  attackStartClip: {fileID: 8300000, guid: 3ddb599e328ccbc45942df8e69b81cac, type: 3}
+  attackStartClip: {fileID: 0}
   startSfxDelay: 0.15
   startVolume: 0.9
   startPitchJitter: 0.05
   minStartSfxInterval: 0.15
---- !u!114 &719940666280560007
+--- !u!114 &6808053372091989210
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

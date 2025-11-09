@@ -12,29 +12,16 @@ public class PlayerParry : MonoBehaviour
     public float parryRadius = 1.3f;     // радиус вокруг игрока
     public float stunDuration = 3f;      // длительность стана врага
     public float autoFaceTurnSpeed = 9999f;
-
-    [Header("Допуски")]
+    public float parryCooldown = 2f;     // КД отражения в секундах
     public float postImpactGrace = 0.06f; // 60 мс «позднего» парри
 
     float lastParryPressTime = -999f;
-
-    [Header("Кулдаун")]
-    public float parryCooldown = 2f;     // КД отражения в секундах
-
-    [Header("Riposte")]
-    public float riposteWindow = 0.7f; // время на контратаку после успешного парри
-    float riposteUntil;
-    public bool InRiposteWindow => Time.time < riposteUntil;
     public Animator anim;
-
-    [Header("Events")]
     public UnityEvent OnParrySuccess;
 
-
-    //float parryActiveUntil = -1f;
     float parryReadyTime = 0f;           // когда способность снова доступна
 
-    void Awake() { if (!anim) anim = GetComponent<Animator>(); }
+    void Awake() { anim = GetComponent<Animator>(); }
     void Update()
     {
         bool parryPressed =
@@ -49,7 +36,6 @@ public class PlayerParry : MonoBehaviour
             lastParryPressTime = Time.time;              // запоминаем момент нажатия
             parryReadyTime = Time.time + parryCooldown;
 
-            //HitFx.ShowRing(transform.position, parryRadius, new Color(0.2f, 1f, 1f), parryWindow);
             if (anim) anim.SetTrigger("Deflect");
         }
     }
@@ -77,10 +63,7 @@ public class PlayerParry : MonoBehaviour
             transform.rotation = Quaternion.RotateTowards(transform.rotation, look, autoFaceTurnSpeed);
         }
 
-        //HitFx.HitSpark(transform.position + Vector3.up * 0.8f, new Color(0.2f, 1f, 1f), 0.3f, 0.25f);
-
         stun = stunDuration;
-        riposteUntil = Time.time + riposteWindow;
 
         OnParrySuccess?.Invoke();
         return true;
