@@ -261,11 +261,11 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 2
-  m_Acceleration: 8
+  m_Speed: 4
+  m_Acceleration: 4
   avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_AngularSpeed: 240
+  m_StoppingDistance: 1.3
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -343,8 +343,8 @@ MonoBehaviour:
   comboGap: 0.25
   attackCooldown: 1
   meleeDamage: 1
-  meleeRange: 2.3
-  meleeWidth: 1.6
+  meleeRange: 2
+  meleeWidth: 1.3
   playerMask:
     serializedVersion: 2
     m_Bits: 256
@@ -367,6 +367,9 @@ MonoBehaviour:
   randomPitchMin: 0.96
   randomPitchMax: 1.04
   sfxVolume: 1
+  flashLights: []
+  parryKillLightTime: 10
+  playerGlow: {fileID: 0}
 --- !u!114 &3846508244852235678
 MonoBehaviour:
   m_ObjectHideFlags: 0

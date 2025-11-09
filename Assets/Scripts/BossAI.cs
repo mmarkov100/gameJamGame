@@ -55,6 +55,29 @@ public class BossAI : MonoBehaviour
     [Range(0.8f, 1.2f)] public float randomPitchMax = 1.04f;
     [Range(0f, 1f)] public float sfxVolume = 1.0f;
 
+    // === FLASH (вместо ParrySonarSwitcher) ===
+    [System.Serializable]
+    public struct LightEntry
+    {
+        public Light light;          // источник света
+        public float flashIntensity; // интенсивность на время вспышки
+    }
+
+    [Header("Parry-Kill Flash")]
+    [Tooltip("Света, которые должны вспыхнуть ТОЛЬКО когда босс умер от парирования после 30 сек.")]
+    public LightEntry[] flashLights;
+    [Tooltip("Длительность вспышки света при парри-килле.")]
+    public float parryKillLightTime = 2.0f;
+
+    [Tooltip("Опционально: подсветка игрока, которую надо подавить на время вспышки.")]
+    public PlayerAlwaysGlow playerGlow;
+
+    // базовые значения света
+    float[] baseIntensities;
+    bool[] baseEnabled;
+    bool flashInitialized;
+    bool parryKillFlashPlayed; // защита от повторного триггера
+
     // runtime
     private bool isAttacking;
     private bool isInCooldown;
@@ -80,11 +103,36 @@ public class BossAI : MonoBehaviour
             sfxSource.maxDistance = 25f;
         }
         if (outputMixerGroup) sfxSource.outputAudioMixerGroup = outputMixerGroup;
+
+        InitFlashLights();
+        if (!playerGlow) playerGlow = FindObjectOfType<PlayerAlwaysGlow>();
+    }
+
+    void InitFlashLights()
+    {
+        if (flashLights == null) flashLights = new LightEntry[0];
+        baseIntensities = new float[flashLights.Length];
+        baseEnabled = new bool[flashLights.Length];
+
+        for (int i = 0; i < flashLights.Length; i++)
+        {
+            var L = flashLights[i].light;
+            if (!L) continue;
+
+            baseIntensities[i] = L.intensity;
+            baseEnabled[i] = L.enabled;
+
+            // подготовим: включим, но сделаем тёмным
+            L.enabled = true;
+            L.intensity = 0f;
+        }
+        flashInitialized = true;
     }
 
     void OnEnable()
     {
         spawnTime = Time.time;
+        parryKillFlashPlayed = false;
         if (health) health.onDeath += OnDeath;
     }
 
@@ -175,17 +223,28 @@ public class BossAI : MonoBehaviour
     {
         if (Time.time - spawnTime < invulnerableSeconds)
         {
-            // 🔊 парри в ранней фазе — наказываем игрока
             PlayRandom(sfxParryPunish);
             DamagePlayerDirect();
         }
         else
         {
-            // 🔊 успешное парри после 30 сек — смерть босса
             PlayRandom(sfxParryKill);
-            if (health && !health.IsDead) health.KillImmediate();
+
+            // ⚡ сразу оборвать атаку и переключить аниматор на смерть
+            InterruptAttackForDeath();
+
+            if (health && !health.IsDead)
+            {
+                health.KillImmediate();          // вызовет OnDeath(), но мы уже перевели аниматор в смерть
+                if (!parryKillFlashPlayed)
+                {
+                    parryKillFlashPlayed = true;
+                    StartCoroutine(ParryKillFlashCo());
+                }
+            }
         }
     }
+
 
     public bool IsCurrentlyInvulnerable()
     {
@@ -193,9 +252,39 @@ public class BossAI : MonoBehaviour
     }
 
     // ==== АНИМАЦИОННЫЕ ИВЕНТЫ ====
-    public void AttackStartEvent()
-    {
 
+    public void AttackStartEvent() { /* звук замаха уже ставим в EnemyMeleeHit если мимо */ }
+
+    private void InterruptAttackForDeath()
+    {
+        // останавливаем преследование и атаку
+        if (attackRoutine != null)
+        {
+            StopCoroutine(attackRoutine);
+            attackRoutine = null;
+        }
+        AttackEndCallback = null;
+
+        isAttacking = false;
+        isInCooldown = false;
+
+        if (agent)
+        {
+            agent.isStopped = true;
+            agent.ResetPath();
+            agent.velocity = Vector3.zero;
+        }
+
+        if (animator)
+        {
+            // сброс триггеров атаки и состояния комбо
+            animator.ResetTrigger(triggerAttack);
+            animator.SetBool(paramIsAttacking, false);
+
+            // моментально уйти в смерть (см. настройки контроля ниже)
+            animator.ResetTrigger(triggerDie);
+            animator.SetTrigger(triggerDie);
+        }
     }
 
     public void EnemyMeleeHit()
@@ -221,11 +310,11 @@ public class BossAI : MonoBehaviour
             var parry = h.GetComponentInParent<PlayerParry>();
             if (parry != null)
             {
-                if (parry.TryParry(transform, out float stun))
+                if (parry.TryParry(transform, out float _))
                 {
-                    // ✅ Успешное отражение
-                    OnParryAttemptSuccessful();  // применяет логику бессмертия / смерти
-                    return; // прекращаем атаку
+                    // ✅ Успешное отражение (далее ветвление внутри OnParryAttemptSuccessful)
+                    OnParryAttemptSuccessful();
+                    return;
                 }
             }
 
@@ -239,7 +328,6 @@ public class BossAI : MonoBehaviour
         if (!hitSomething)
             PlayRandom(sfxSwing);
     }
-
 
     public void AttackEndEvent()
     {
@@ -280,6 +368,50 @@ public class BossAI : MonoBehaviour
         isAttacking = false;
         if (animator) animator.SetTrigger(triggerDie);
         // опционально: sfxSource.Stop();
+    }
+
+    // ==== FLASH LOGIC ====
+    private IEnumerator ParryKillFlashCo()
+    {
+        if (!flashInitialized) InitFlashLights();
+
+        var sonar = SonarController.Instance;
+
+        // 1) Пауза сонара и подсветок
+        if (sonar) sonar.paused = true;
+        if (playerGlow) playerGlow.SetSuppressed(true);
+        EnemySonarResponder.SetSuppressed(true);
+
+        // Дадим кадр на снятие материалов/эмиссии
+        yield return null;
+
+        // 2) Включаем каждый свет своей интенсивностью
+        for (int i = 0; i < flashLights.Length; i++)
+        {
+            var entry = flashLights[i];
+            var L = entry.light;
+            if (!L) continue;
+
+            L.enabled = true;
+            L.intensity = entry.flashIntensity;
+        }
+
+        yield return new WaitForSeconds(parryKillLightTime);
+
+        // 3) Откат света к исходным значениям
+        for (int i = 0; i < flashLights.Length; i++)
+        {
+            var L = flashLights[i].light;
+            if (!L) continue;
+
+            L.intensity = baseIntensities[i];
+            L.enabled = baseEnabled[i];
+        }
+
+        // 4) Возврат эффектов
+        EnemySonarResponder.SetSuppressed(false);
+        if (playerGlow) playerGlow.SetSuppressed(false);
+        if (sonar) sonar.paused = false;
     }
 
     // ==== AUDIO HELPERS ====
